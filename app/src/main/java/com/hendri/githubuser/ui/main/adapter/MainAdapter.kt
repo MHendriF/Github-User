@@ -9,7 +9,11 @@ import com.hendri.githubuser.R
 import com.hendri.githubuser.data.model.User
 import kotlinx.android.synthetic.main.item_row_user.view.*
 
-class MainAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+class MainAdapter(
+    private val users: ArrayList<User>,
+    private val listener: (User) -> Unit
+) :
+    RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
@@ -24,12 +28,16 @@ class MainAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<Mai
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder =
-        DataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false))
+        DataViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
+        )
 
     override fun getItemCount(): Int = users.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+        val user = users[position]
         holder.bind(users[position])
+        holder.itemView.setOnClickListener{ listener(user) }
     }
 
     fun addUsers(users: List<User>) {

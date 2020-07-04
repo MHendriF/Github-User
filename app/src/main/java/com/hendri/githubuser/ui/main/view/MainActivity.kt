@@ -1,5 +1,6 @@
 package com.hendri.githubuser.ui.main.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupUI() {
         setupActionBar()
         rv_users.layoutManager = LinearLayoutManager(this)
-        adapter = MainAdapter(arrayListOf())
+        adapter = MainAdapter(arrayListOf()) { user -> user.login?.let { toast(it) } }
         rv_users.addItemDecoration(
             DividerItemDecoration(
                 rv_users.context,
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity() {
             val title = "Github User's"
             supportActionBar!!.title = title
         }
+    }
+
+    fun Context.toast(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupObservers() {
