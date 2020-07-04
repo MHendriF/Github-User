@@ -1,8 +1,5 @@
 package com.hendri.githubuser.utils
 
-import com.hendri.githubuser.data.api.UserResponse
-import retrofit2.Call
-
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
 

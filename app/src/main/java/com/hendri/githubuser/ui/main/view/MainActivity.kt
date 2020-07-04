@@ -1,7 +1,6 @@
 package com.hendri.githubuser.ui.main.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,16 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.api.ApiHelper
 import com.hendri.githubuser.data.api.RetrofitBuilder
-import com.hendri.githubuser.data.api.UserResponse
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.MainAdapter
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         rv_users.adapter = adapter
     }
 
-    private fun setupActionBar(){
+    private fun setupActionBar() {
         if (supportActionBar != null) {
             val title = "Github User's"
             supportActionBar!!.title = title
@@ -87,10 +82,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+
     private fun retrieveList(users: List<User>) {
         adapter.apply {
             addUsers(users)
             notifyDataSetChanged()
         }
     }
+
 }

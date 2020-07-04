@@ -14,10 +14,10 @@ class MainAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<Mai
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
             itemView.apply {
-                tv_item_name.text = user.name
-                tv_item_detail.text = user.email
+                tv_item_name.text = user.login
+                tv_item_detail.text = user.company
                 Glide.with(img_item_photo.context)
-                    .load(user.avatar)
+                    .load(user.avatar_url)
                     .into(img_item_photo)
             }
         }
