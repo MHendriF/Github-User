@@ -6,4 +6,6 @@
     <color name="shimmer_bg">#dddddd</color>
     <color name="light_white">#f6f6f6</color>
     <color name="grey_60">#666666</color>
+    <color name="bgFollowers">#109C00</color>
+    <color name="bgFollowing">#0073AF</color>
 </resources>

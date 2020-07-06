@@ -1,5 +1,6 @@
 package com.hendri.githubuser.data.api
 
+import com.hendri.githubuser.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -7,8 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
-    //private const val BASE_URL = "https://5e510330f2c0d300147c034c.mockapi.io/"
-    private const val BASE_URL = "https://api.github.com/"
+    private const val BASE_URL = BuildConfig.API_BASE_URL
 
     private fun getInterceptor(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()

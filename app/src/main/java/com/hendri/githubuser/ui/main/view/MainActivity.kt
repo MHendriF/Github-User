@@ -1,6 +1,7 @@
 package com.hendri.githubuser.ui.main.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -40,7 +41,15 @@ class MainActivity : AppCompatActivity() {
     private fun setupUI() {
         setupActionBar()
         rv_users.layoutManager = LinearLayoutManager(this)
-        adapter = MainAdapter(arrayListOf()) { user -> user.login?.let { toast(it) } }
+        adapter = MainAdapter(arrayListOf()) { user ->
+            user.let {
+                //toast(it.login)
+                val intent = Intent(applicationContext, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_USER, user)
+                startActivity(intent)
+            }
+        }
+
         rv_users.addItemDecoration(
             DividerItemDecoration(
                 rv_users.context,
@@ -51,13 +60,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
-        if (supportActionBar != null) {
-            val title = "Github User's"
-            supportActionBar!!.title = title
-        }
+        val title = "Github User's"
+        supportActionBar?.title = title
     }
 
-    fun Context.toast(message: String){
+    fun Context.toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -69,8 +76,7 @@ class MainActivity : AppCompatActivity() {
                         rv_users.visibility = View.VISIBLE
                         shimmer_view_container.stopShimmer()
                         shimmer_view_container.visibility = View.GONE
-                        resource.data?.let {
-                                users -> retrieveList(users) }
+                        resource.data?.let { users -> retrieveList(users) }
                     }
                     Status.ERROR -> {
                         rv_users.visibility = View.VISIBLE
