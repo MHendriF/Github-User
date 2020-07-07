@@ -22,7 +22,8 @@ data class User(
     var organizations_url: String?,
     var repos_url: String?,
     var followers: Int?,
-    var following: Int?
+    var following: Int?,
+    var public_repos: Int?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -43,6 +44,7 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int
     )
@@ -67,6 +69,7 @@ data class User(
         dest?.writeString(repos_url)
         dest?.writeValue(followers)
         dest?.writeValue(following)
+        dest?.writeValue(public_repos)
     }
 
     override fun describeContents(): Int {

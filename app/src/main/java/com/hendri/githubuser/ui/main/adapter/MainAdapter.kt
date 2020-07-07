@@ -19,7 +19,7 @@ class MainAdapter(
         fun bind(user: User) {
             itemView.apply {
                 tv_item_name.text = user.login
-                tv_item_detail.text = user.company
+                tv_item_detail.text = user.html_url
                 Glide.with(img_item_photo.context)
                     .load(user.avatar_url)
                     .into(img_item_photo)

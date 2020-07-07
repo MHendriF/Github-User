@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.view.DetailActivity">
 
+    <RelativeLayout
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/white_circle"
+        android:elevation="8dp">
+
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
@@ -15,7 +32,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="100dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|snap">
@@ -39,7 +56,7 @@
             app:theme="@style/ThemeOverlay.AppCompat.Light" />
 
         <LinearLayout
-            android:id="@+id/materialup.title_container"
+            android:id="@+id/info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -48,19 +65,125 @@
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <TextView
+                android:id="@+id/tv_item_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
+                android:layout_marginBottom="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
             <TextView
+                android:id="@+id/tv_item_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/email"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
                 android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_item_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bio"
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_star_border"/>
+
+                    <TextView
+                        android:id="@+id/tv_item_repo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" repo"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_followers"/>
+
+                    <TextView
+                        android:id="@+id/tv_item_follower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" followers"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_following"/>
+
+                    <TextView
+                        android:id="@+id/tv_item_following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" following"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
@@ -85,7 +208,7 @@
         android:layout_gravity="center_horizontal"
         android:elevation="8dp"
         android:src="@drawable/cirlce_image"
-        app:layout_anchor="@id/materialup.title_container"
+        app:layout_anchor="@id/info_container"
         app:layout_anchorGravity="top|center_horizontal"
         app:layout_scrollFlags="scroll" />
 
