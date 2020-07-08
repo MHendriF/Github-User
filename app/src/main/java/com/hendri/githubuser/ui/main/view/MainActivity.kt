@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                         rv_users.visibility = View.VISIBLE
                         shimmer_view_container.stopShimmer()
                         shimmer_view_container.visibility = View.GONE
-                        resource.data?.let { users -> retrieveList(users) }
+                        resource.data?.let { users -> setupData(users) }
                     }
                     Status.ERROR -> {
                         rv_users.visibility = View.VISIBLE
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun retrieveList(users: List<User>) {
+    private fun setupData(users: List<User>) {
         adapter.apply {
             addUsers(users)
             notifyDataSetChanged()
