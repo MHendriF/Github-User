@@ -1,14 +1,11 @@
 package com.hendri.githubuser.data.api
 
 class ApiHelper(private val apiService: ApiService) {
-    suspend fun getUsers() = apiService.getUsers()
-
     suspend fun searchUsers() = apiService.searchUsers()
 
-    suspend fun detailUser() = apiService.detailUser()
+    suspend fun detailUser(username: String?) = apiService.detailUser(username)
 
-    suspend fun getFollowing() = apiService.getFollowing()
+    suspend fun getFollowing(username: String?) = apiService.getFollowing(username)
 
-    suspend fun getFollowers() = apiService.getFollowers()
-
+    suspend fun getFollowers(username: String?) = apiService.getFollowers(username)
 }

@@ -27,9 +27,20 @@ class FollowingFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: FollowingAdapter
+    private lateinit var user: User
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        private val EXTRA_USER = "extra_user"
+
+        fun newInstance(user: User) = FollowingFragment().withArgs {
+            putParcelable(EXTRA_USER, user)
+        }
+
+        private inline fun <T : Fragment> T.withArgs(
+            argsBuilder: Bundle.() -> Unit
+        ): T = this.apply {
+            arguments = Bundle().apply(argsBuilder)
+        }
     }
 
     override fun onCreateView(
@@ -41,9 +52,16 @@ class FollowingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupData()
         setupViewModel()
         setupUI()
         setupObservers()
+    }
+
+    private fun setupData() {
+        if (arguments != null) {
+            user = arguments?.getParcelable(EXTRA_USER)!!
+        }
     }
 
     private fun setupViewModel() {
@@ -70,7 +88,7 @@ class FollowingFragment : Fragment() {
 
     private fun setupObservers() {
         activity?.let {
-            viewModel.getFollowing().observe(it, Observer {
+            viewModel.getFollowing(user.login).observe(it, Observer {
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {

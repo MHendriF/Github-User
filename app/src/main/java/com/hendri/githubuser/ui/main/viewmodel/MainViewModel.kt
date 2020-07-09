@@ -12,7 +12,6 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
     fun getUsers() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            //emit(Resource.success(data = mainRepository.getUsers()))
             val response = mainRepository.searchUsers()
             if (response.isSuccessful){
                 Log.d("Trace", "getUsers: "+response.body()?.dataUsers)
@@ -23,28 +22,28 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
-    fun detailUser() = liveData(Dispatchers.IO) {
+    fun detailUser(username: String?) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = mainRepository.detailUser()))
+            emit(Resource.success(data = mainRepository.detailUser(username)))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 
-    fun getFollowing() = liveData(Dispatchers.IO) {
+    fun getFollowing(username: String?) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = mainRepository.getFollowing()))
+            emit(Resource.success(data = mainRepository.getFollowing(username)))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 
-    fun getFollowers() = liveData(Dispatchers.IO) {
+    fun getFollowers(username: String?) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = mainRepository.getFollowers()))
+            emit(Resource.success(data = mainRepository.getFollowers(username)))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }

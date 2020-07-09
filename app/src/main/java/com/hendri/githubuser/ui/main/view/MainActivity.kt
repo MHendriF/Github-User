@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         rv_users.layoutManager = LinearLayoutManager(this)
         adapter = MainAdapter(arrayListOf()) { user ->
             user.let {
-                //toast(it.login)
                 val intent = Intent(applicationContext, DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_USER, user)
                 startActivity(intent)
@@ -64,10 +63,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    fun Context.toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun setupObservers() {
         viewModel.getUsers().observe(this, Observer {
             it?.let { resource ->
@@ -82,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                         rv_users.visibility = View.VISIBLE
                         shimmer_view_container.stopShimmer()
                         shimmer_view_container.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                        it.message?.let { it1 -> this.toast(it1) }
                     }
                     Status.LOADING -> {
                         shimmer_view_container.startShimmer()
@@ -93,12 +88,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
     private fun setupData(users: List<User>) {
         adapter.apply {
             addUsers(users)
             notifyDataSetChanged()
         }
     }
+
+    private fun Context.toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
 }
