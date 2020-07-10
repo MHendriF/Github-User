@@ -1,7 +1,6 @@
 package com.hendri.githubuser.ui.main.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +35,8 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     private var mMaxScrollSize = 0
     private lateinit var viewModel: MainViewModel
     private lateinit var user: User
+    private lateinit var following: String
+    private lateinit var followers: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,30 +44,45 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         setupActionBar()
 
         user = intent.getParcelableExtra(EXTRA_USER) as User
+        followers = resources.getString(R.string.followers)
+        following = resources.getString(R.string.following)
 
         setupViewModel()
         setupObservers()
 
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         appbarLayout.addOnOffsetChangedListener(this)
         mMaxScrollSize = appbarLayout.totalScrollRange
 
-        val adapter =
-            TabAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, user)
+        val adapter = TabAdapter(
+            supportFragmentManager,
+            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+            user,
+            followers,
+            following
+        )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
+
     }
 
-    class TabAdapter(fm: FragmentManager, behavior: Int, private val user: User) :
+    class TabAdapter(
+        fm: FragmentManager,
+        behavior: Int,
+        private val user: User,
+        followers: String,
+        following: String
+    ) :
         FragmentStatePagerAdapter(fm, behavior) {
-        private val tabName: Array<String> = arrayOf("Followers", "Following")
+        private val tabName: Array<String> = arrayOf(followers, following)
 
         override fun getItem(position: Int): Fragment {
 
-            var fragment: Fragment?
-            when (position) {
-                0 -> fragment = FollowersFragment.newInstance(user)
-                1 -> fragment = FollowingFragment.newInstance(user)
-                else -> fragment = FollowersFragment.newInstance(user)
+            val fragment: Fragment?
+            fragment = when (position) {
+                0 -> FollowersFragment.newInstance(user)
+                1 -> FollowingFragment.newInstance(user)
+                else -> FollowersFragment.newInstance(user)
             }
             return fragment
         }
@@ -107,7 +123,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     }
 
     private fun setupUI(user: User) {
-        tv_item_username.text = user.login
+        tv_item_name.text = user.name
         tv_item_email.text = user.email
         tv_item_bio.text = user.bio
         tv_item_repo.text = user.public_repos.toString()

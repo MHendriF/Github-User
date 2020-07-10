@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">GithubUser</string>
     <string name="username">username</string>
+    <string name="name">name</string>
     <string name="email">email@example.com</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bio">Berlari kencang adalah jalan ninjaku</string>
+    <string name="bio">bio</string>
+    <string name="search">Search</string>
+    <string name="setting">Setting</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="search_hint">Enter keyword</string>
+    <string name="repo">repo</string>
+    <string name="value_following">23</string>
+    <string name="value_followers">10</string>
+    <string name="value_repo">4</string>
+    <string name="image_backdrop">image backdrop</string>
+    <string name="image_icon">image icon</string>
 </resources>

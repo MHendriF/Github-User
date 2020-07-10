@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GithubUser</string>
+    <string name="username">username</string>
+    <string name="name">nama</string>
+    <string name="email">email@example.com</string>
+    <string name="bio">biodata</string>
+    <string name="search">Cari</string>
+    <string name="setting">Pengaturan</string>
+    <string name="followers">pengikut</string>
+    <string name="following">mengikuti</string>
+    <string name="search_hint">Masukkan kata pencarian</string>
+    <string name="repo">repo</string>
+    <string name="value_following">23</string>
+    <string name="value_followers">10</string>
+    <string name="value_repo">4</string>
+    <string name="image_backdrop">gambar latarp</string>
+    <string name="image_icon">gambar ikon</string>
+</resources>

@@ -11,7 +11,11 @@ import retrofit2.http.Path
 interface ApiService {
     @GET("search/users?q=he")
     @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")
-    suspend fun searchUsers() : Response<UserResponse<User>>
+    suspend fun getUsers() : Response<UserResponse<User>>
+
+    @GET("search/users?q={username}")
+    @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")
+    suspend fun searchUsers(@Path("username") username: String?) : Response<UserResponse<User>>
 
     @GET("users/{username}")
     @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")

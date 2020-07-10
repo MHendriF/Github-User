@@ -12,7 +12,20 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
     fun getUsers() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            val response = mainRepository.searchUsers()
+            val response = mainRepository.getUsers()
+            if (response.isSuccessful){
+                Log.d("Trace", "getUsers: "+response.body()?.dataUsers)
+                emit(Resource.success(data = response.body()?.dataUsers))
+            }
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+    fun searchUsers(username: String?) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            val response = mainRepository.searchUsers(username)
             if (response.isSuccessful){
                 Log.d("Trace", "getUsers: "+response.body()?.dataUsers)
                 emit(Resource.success(data = response.body()?.dataUsers))
