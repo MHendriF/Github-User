@@ -30,10 +30,10 @@ class FollowingFragment : Fragment() {
     private lateinit var user: User
 
     companion object {
-        private val EXTRA_USER = "extra_user"
+        private const val ARG_USER = "arg_user"
 
         fun newInstance(user: User) = FollowingFragment().withArgs {
-            putParcelable(EXTRA_USER, user)
+            putParcelable(ARG_USER, user)
         }
 
         private inline fun <T : Fragment> T.withArgs(
@@ -60,7 +60,7 @@ class FollowingFragment : Fragment() {
 
     private fun setupData() {
         if (arguments != null) {
-            user = arguments?.getParcelable(EXTRA_USER)!!
+            user = arguments?.getParcelable<User>(ARG_USER) as User
         }
     }
 
@@ -70,7 +70,7 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setupUI() {
-        rv_users.layoutManager = LinearLayoutManager(activity)
+        rv_users.layoutManager = LinearLayoutManager(requireContext())
         adapter = FollowingAdapter(arrayListOf()) { user ->
             user.let {
 
@@ -101,7 +101,7 @@ class FollowingFragment : Fragment() {
                             rv_users.visibility = View.VISIBLE
                             shimmer_view_container.stopShimmer()
                             shimmer_view_container.visibility = View.GONE
-                            it.message?.let { it1 -> activity?.toast(it1) }
+                            it.message?.let { it1 -> requireContext().toast(it1) }
                         }
                         Status.LOADING -> {
                             shimmer_view_container.startShimmer()
