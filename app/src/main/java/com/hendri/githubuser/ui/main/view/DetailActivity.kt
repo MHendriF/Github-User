@@ -43,7 +43,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         setContentView(R.layout.activity_detail)
         setupActionBar()
 
-        user = intent.getParcelableExtra(EXTRA_USER) as User
+        user = intent.getParcelableExtra(EXTRA_USER)!!
         followers = resources.getString(R.string.followers)
         following = resources.getString(R.string.following)
 

@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 keyword = query.trim()
-                toast(keyword)
+                setupObservers()
                 return true
             }
             override fun onQueryTextChange(newText: String): Boolean {
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.getUsers().observe(this, Observer {
+        viewModel.searchUsers(keyword).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     Status.LOADING -> {
                         shimmer_view_container.startShimmer()
+                        shimmer_view_container.visibility = View.VISIBLE
                         rv_users.visibility = View.GONE
                     }
                 }
