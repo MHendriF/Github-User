@@ -46,6 +46,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         user = intent.getParcelableExtra(EXTRA_USER)!!
         followers = resources.getString(R.string.followers)
         following = resources.getString(R.string.following)
+        val tabName = arrayOf(followers, following)
 
         setupViewModel()
         setupObservers()
@@ -58,23 +59,19 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
             supportFragmentManager,
             BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
             user,
-            followers,
-            following
+            tabName
         )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
-
     }
 
     class TabAdapter(
         fm: FragmentManager,
         behavior: Int,
         private val user: User,
-        followers: String,
-        following: String
+        private val tabName: Array<String>
     ) :
         FragmentStatePagerAdapter(fm, behavior) {
-        private val tabName: Array<String> = arrayOf(followers, following)
 
         override fun getItem(position: Int): Fragment {
 
