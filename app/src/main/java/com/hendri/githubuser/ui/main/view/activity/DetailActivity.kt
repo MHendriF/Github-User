@@ -1,4 +1,4 @@
-package com.hendri.githubuser.ui.main.view
+package com.hendri.githubuser.ui.main.view.activity
 
 import android.os.Bundle
 import android.view.View
@@ -17,8 +17,8 @@ import com.hendri.githubuser.data.api.ApiHelper
 import com.hendri.githubuser.data.api.RetrofitBuilder
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
-import com.hendri.githubuser.ui.main.fragment.FollowersFragment
-import com.hendri.githubuser.ui.main.fragment.FollowingFragment
+import com.hendri.githubuser.ui.main.view.fragment.FollowersFragment
+import com.hendri.githubuser.ui.main.view.fragment.FollowingFragment
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -55,12 +55,13 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         appbarLayout.addOnOffsetChangedListener(this)
         mMaxScrollSize = appbarLayout.totalScrollRange
 
-        val adapter = TabAdapter(
-            supportFragmentManager,
-            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-            user,
-            tabName
-        )
+        val adapter =
+            TabAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                user,
+                tabName
+            )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
     }
@@ -120,12 +121,18 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     }
 
     private fun setupUI(user: User) {
-        tv_item_name.text = user.name
-        tv_item_email.text = user.email
-        tv_item_bio.text = user.bio
-        tv_item_repo.text = user.public_repos.toString()
-        tv_item_follower.text = user.followers.toString()
-        tv_item_following.text = user.following.toString()
+        tvName.text = user.name
+        tvUsername.text = user.login
+        if (user.bio.isNullOrEmpty()) {
+            tvBio.visibility = View.GONE
+        } else {
+            tvBio.visibility = View.VISIBLE
+            tvBio.text = user.bio
+        }
+
+        tvRepo.text = user.public_repos.toString()
+        tvFollowers.text = user.followers.toString()
+        tvFollowing.text = user.following.toString()
         Glide.with(avatarImage.context)
             .load(user.avatar_url)
             .into(avatarImage)

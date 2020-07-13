@@ -1,4 +1,4 @@
-package com.hendri.githubuser.ui.main.view
+package com.hendri.githubuser.ui.main.view.activity
 
 import android.app.SearchManager
 import android.content.Context
