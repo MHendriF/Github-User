@@ -36,10 +36,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        keyword = "he"
         setupViewModel()
         setupUI()
-        setupObservers()
     }
 
     private fun setupViewModel() {
@@ -49,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUI() {
         setupActionBar()
-        rv_users.layoutManager = LinearLayoutManager(this)
+        rvUsers.layoutManager = LinearLayoutManager(this)
         adapter = MainAdapter(arrayListOf()) { user ->
             user.let {
                 val intent = Intent(applicationContext, DetailActivity::class.java)
@@ -58,17 +56,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        rv_users.addItemDecoration(
+        rvUsers.addItemDecoration(
             DividerItemDecoration(
-                rv_users.context,
-                (rv_users.layoutManager as LinearLayoutManager).orientation
+                rvUsers.context,
+                (rvUsers.layoutManager as LinearLayoutManager).orientation
             )
         )
-        rv_users.adapter = adapter
+        rvUsers.adapter = adapter
+
+        shimmerContainer.stopShimmer()
+        shimmerContainer.visibility = View.GONE
     }
 
     private fun setupActionBar() {
-        val title = "Github User's"
+        val title = "Search Github User's"
         supportActionBar?.title = title
     }
 
@@ -113,21 +114,34 @@ class MainActivity : AppCompatActivity() {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        rv_users.visibility = View.VISIBLE
-                        shimmer_view_container.stopShimmer()
-                        shimmer_view_container.visibility = View.GONE
+                        rvUsers.visibility = View.VISIBLE
+                        shimmerContainer.stopShimmer()
+                        shimmerContainer.visibility = View.GONE
+                        if (resource.data?.size == 0) {
+                            ivNotFound.visibility = View.VISIBLE
+                            tvNotFound.visibility = View.VISIBLE
+                        } else{
+                            ivNotFound.visibility = View.GONE
+                            tvNotFound.visibility = View.GONE
+                        }
                         resource.data?.let { users -> setupData(users) }
                     }
                     Status.ERROR -> {
-                        rv_users.visibility = View.VISIBLE
-                        shimmer_view_container.stopShimmer()
-                        shimmer_view_container.visibility = View.GONE
+                        rvUsers.visibility = View.VISIBLE
+                        shimmerContainer.stopShimmer()
+                        shimmerContainer.visibility = View.GONE
+                        ivNotFound.visibility = View.GONE
+                        tvNotFound.visibility = View.GONE
                         it.message?.let { it1 -> this.toast(it1) }
                     }
                     Status.LOADING -> {
-                        shimmer_view_container.startShimmer()
-                        shimmer_view_container.visibility = View.VISIBLE
-                        rv_users.visibility = View.GONE
+                        shimmerContainer.startShimmer()
+                        shimmerContainer.visibility = View.VISIBLE
+                        rvUsers.visibility = View.GONE
+                        ivSearch.visibility = View.GONE
+                        tvSearch.visibility = View.GONE
+                        ivNotFound.visibility = View.GONE
+                        tvNotFound.visibility = View.GONE
                     }
                 }
             }

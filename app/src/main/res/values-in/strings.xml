@@ -16,4 +16,6 @@
     <string name="value_repo">4</string>
     <string name="image_backdrop">gambar latarp</string>
     <string name="image_icon">gambar ikon</string>
+    <string name="user_not_found">User tidak ditemukan</string>
+    <string name="search_text">Cari akun user github</string>
 </resources>

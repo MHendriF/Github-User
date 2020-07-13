@@ -15,4 +15,6 @@
     <string name="value_repo">4</string>
     <string name="image_backdrop">image backdrop</string>
     <string name="image_icon">image icon</string>
+    <string name="user_not_found">User not found</string>
+    <string name="search_text">Search for a github user</string>
 </resources>
