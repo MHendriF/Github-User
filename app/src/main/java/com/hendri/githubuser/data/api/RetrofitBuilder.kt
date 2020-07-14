@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+
 object RetrofitBuilder {
     private const val BASE_URL = BuildConfig.API_BASE_URL
 
@@ -14,9 +15,16 @@ object RetrofitBuilder {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        return OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor)
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                    .header("Authorization", BuildConfig.TOKEN_GITHUB)
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
             .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .build()
     }
@@ -29,6 +37,6 @@ object RetrofitBuilder {
             .build()
     }
 
-    val apiService: ApiService = getRetrofit().create(ApiService::class.java)
+    val apiService: ApiService by lazy { getRetrofit().create(ApiService::class.java) }
 
 }

@@ -44,9 +44,10 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         setupActionBar()
 
         user = intent.getParcelableExtra(EXTRA_USER)!!
-        followers = resources.getString(R.string.followers)
-        following = resources.getString(R.string.following)
-        val tabName = arrayOf(followers, following)
+        val tabsName = arrayOf(
+            resources.getString(R.string.followers),
+            resources.getString(R.string.following)
+        )
 
         setupViewModel()
         setupObservers()
@@ -60,7 +61,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
                 supportFragmentManager,
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 user,
-                tabName
+                tabsName
             )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)

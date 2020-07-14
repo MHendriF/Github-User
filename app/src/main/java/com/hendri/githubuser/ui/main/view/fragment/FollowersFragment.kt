@@ -17,6 +17,7 @@ import com.hendri.githubuser.data.api.RetrofitBuilder
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.FollowersAdapter
+import com.hendri.githubuser.ui.main.viewmodel.FollowersViewModel
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.fragment_followers.*
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_followers.*
 
 class FollowersFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: FollowersViewModel
     private lateinit var adapter: FollowersAdapter
     private lateinit var user: User
 
@@ -65,7 +66,7 @@ class FollowersFragment : Fragment() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService)))
-            .get(MainViewModel::class.java)
+            .get(FollowersViewModel::class.java)
     }
 
     private fun setupUI() {
