@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.model.User
-import kotlinx.android.synthetic.main.item_row_user.view.*
+import kotlinx.android.synthetic.main.item_user.view.*
 
 class FollowingAdapter(
     private val users: ArrayList<User>,
@@ -18,11 +20,16 @@ class FollowingAdapter(
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
             itemView.apply {
-                tv_item_name.text = user.login
-                tv_item_detail.text = user.html_url
-                Glide.with(img_item_photo.context)
+                tvUsername.text = user.login
+                tvUrl.text = user.html_url
+                Glide.with(ivAvatar.context)
                     .load(user.avatar_url)
-                    .into(img_item_photo)
+                    .apply(
+                        RequestOptions
+                            .circleCropTransform()
+                            .override(100, 100)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(ivAvatar)
             }
         }
     }
@@ -32,7 +39,7 @@ class FollowingAdapter(
         viewType: Int
     ): DataViewHolder =
         DataViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
         )
 
     override fun getItemCount(): Int = users.size

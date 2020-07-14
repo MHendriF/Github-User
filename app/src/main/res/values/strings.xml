@@ -13,8 +13,9 @@
     <string name="value_following">23</string>
     <string name="value_followers">10</string>
     <string name="value_repo">4</string>
-    <string name="image_backdrop">image backdrop</string>
-    <string name="image_icon">image icon</string>
+    <string name="image_backdrop">Image backdrop</string>
+    <string name="image_icon">Image icon</string>
+    <string name="image_avatar">Image avatar</string>
     <string name="user_not_found">User not found</string>
     <string name="search_text">Search for a github user</string>
 </resources>

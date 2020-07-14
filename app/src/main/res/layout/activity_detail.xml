@@ -211,13 +211,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/avatarImage"
+    <ImageView
+        android:id="@+id/ivAvatar"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/image_avatar"
         android:elevation="8dp"
-        android:src="@drawable/cirlce_image"
+        android:src="@drawable/circle_image"
         app:layout_anchor="@id/infoContainer"
         app:layout_anchorGravity="top|center_horizontal"
         app:layout_scrollFlags="scroll" />

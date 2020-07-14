@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.api.ApiHelper
@@ -102,7 +104,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
 
         if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
             mIsAvatarShown = false
-            avatarImage?.animate()
+            ivAvatar?.animate()
                 ?.scaleY(0f)?.scaleX(0f)
                 ?.setDuration(200)
                 ?.start()
@@ -110,7 +112,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
 
         if (percentage <= PERCENTAGE_TO_ANIMATE_AVATAR && !mIsAvatarShown) {
             mIsAvatarShown = true
-            avatarImage?.animate()
+            ivAvatar?.animate()
                 ?.scaleY(1f)?.scaleX(1f)
                 ?.start()
         }
@@ -134,9 +136,14 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         tvRepo.text = user.public_repos.toString()
         tvFollowers.text = user.followers.toString()
         tvFollowing.text = user.following.toString()
-        Glide.with(avatarImage.context)
+        Glide.with(ivAvatar.context)
             .load(user.avatar_url)
-            .into(avatarImage)
+            .apply(
+                RequestOptions
+                    .circleCropTransform()
+                    .override(100, 100)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+            .into(ivAvatar)
     }
 
     private fun setupObservers() {

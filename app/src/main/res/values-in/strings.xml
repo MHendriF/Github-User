@@ -14,8 +14,9 @@
     <string name="value_following">23</string>
     <string name="value_followers">10</string>
     <string name="value_repo">4</string>
-    <string name="image_backdrop">gambar latarp</string>
-    <string name="image_icon">gambar ikon</string>
+    <string name="image_backdrop">Gambar latar</string>
+    <string name="image_icon">Gambar ikon</string>
+    <string name="image_avatar">Gambar avatar</string>
     <string name="user_not_found">User tidak ditemukan</string>
     <string name="search_text">Cari akun user github</string>
 </resources>
