@@ -1,6 +1,7 @@
 package com.hendri.githubuser.ui.main.view.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,10 +14,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.api.ApiHelper
+import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
+import com.hendri.githubuser.data.local.DatabaseBuilder
+import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.FollowingAdapter
+import com.hendri.githubuser.ui.main.view.activity.DetailActivity
+import com.hendri.githubuser.ui.main.viewmodel.FollowersViewModel
+import com.hendri.githubuser.ui.main.viewmodel.FollowingViewModel
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.fragment_following.*
@@ -24,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_following.*
 
 class FollowingFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: FollowingViewModel
     private lateinit var adapter: FollowingAdapter
     private lateinit var user: User
 
@@ -64,15 +71,21 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService)))
-            .get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this, ViewModelFactory(
+                ApiHelperImp(RetrofitBuilder.apiService),
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity()))
+            )
+        ).get(FollowingViewModel::class.java)
     }
 
     private fun setupUI() {
         rvUsers.layoutManager = LinearLayoutManager(requireContext())
         adapter = FollowingAdapter(arrayListOf()) { user ->
             user.let {
-
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_USER, user)
+                startActivity(intent)
             }
         }
 

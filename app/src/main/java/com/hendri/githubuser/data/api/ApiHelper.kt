@@ -1,13 +1,16 @@
 package com.hendri.githubuser.data.api
 
-class ApiHelper(private val apiService: ApiService) {
-    suspend fun getUsers() = apiService.getUsers()
+import com.hendri.githubuser.data.model.User
+import com.hendri.githubuser.data.response.UserResponse
+import retrofit2.Response
 
-    suspend fun searchUsers(username: String?) = apiService.searchUsers(username)
+interface ApiHelper {
 
-    suspend fun detailUser(username: String?) = apiService.detailUser(username)
+    suspend fun searchUsers(username: String?) : Response<UserResponse<User>>
 
-    suspend fun getFollowing(username: String?) = apiService.getFollowing(username)
+    suspend fun detailUser(username: String?) : User
 
-    suspend fun getFollowers(username: String?) = apiService.getFollowers(username)
+    suspend fun getFollowing(username: String?) : List<User>
+
+    suspend fun getFollowers(username: String?) : List<User>
 }

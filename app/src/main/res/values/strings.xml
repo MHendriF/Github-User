@@ -18,4 +18,5 @@
     <string name="image_avatar">Image avatar</string>
     <string name="user_not_found">User not found</string>
     <string name="search_text">Search for a github user</string>
+    <string name="favorite">Favorite</string>
 </resources>

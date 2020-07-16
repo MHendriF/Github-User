@@ -1,22 +1,16 @@
 package com.hendri.githubuser.ui.main.view.activity
 
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hendri.githubuser.R
-import com.hendri.githubuser.data.api.ApiHelper
 import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
 import com.hendri.githubuser.data.local.DatabaseBuilder
@@ -24,23 +18,25 @@ import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.MainAdapter
+import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.rvUsers
+import kotlinx.android.synthetic.main.activity_main.shimmerContainer
+import kotlinx.android.synthetic.main.fragment_followers.*
 
-class MainActivity : AppCompatActivity() {
+class FavoriteActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: FavoriteViewModel
     private lateinit var adapter: MainAdapter
-    private lateinit var searchView: SearchView
-    private lateinit var searchManager: SearchManager
-    private lateinit var keyword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_favorite)
         setupViewModel()
         setupUI()
+        setupObservers()
     }
 
     private fun setupViewModel() {
@@ -49,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 ApiHelperImp(RetrofitBuilder.apiService),
                 DatabaseHelperImp(DatabaseBuilder.getInstance(applicationContext))
             )
-        ).get(MainViewModel::class.java)
+        ).get(FavoriteViewModel::class.java)
     }
 
     private fun setupUI() {
@@ -62,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
         rvUsers.addItemDecoration(
             DividerItemDecoration(
                 rvUsers.context,
@@ -75,88 +70,34 @@ class MainActivity : AppCompatActivity() {
         shimmerContainer.visibility = View.GONE
     }
 
-    private fun setupActionBar() {
-        val title = "Search Github User's"
-        supportActionBar?.title = title
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-
-        searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView = menu.findItem(R.id.action_search).actionView as SearchView
-        setupSearchView()
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_setting -> {
-                val intent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-                startActivity(intent)
-                return true
-            }
-            R.id.action_favorite -> {
-                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
-                return true
-            }
-            else -> return true
-        }
-    }
-
-    private fun setupSearchView() {
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                keyword = query.trim()
-                setupObservers()
-                return true
-            }
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-        })
-    }
-
     private fun setupObservers() {
-        viewModel.searchUsers(keyword).observe(this, Observer {
+        viewModel.fetchUsers().observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         rvUsers.visibility = View.VISIBLE
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
-                        if (resource.data?.size == 0) {
-                            ivNotFound.visibility = View.VISIBLE
-                            tvNotFound.visibility = View.VISIBLE
-                        } else{
-                            ivNotFound.visibility = View.GONE
-                            tvNotFound.visibility = View.GONE
-                        }
                         resource.data?.let { users -> setupData(users) }
                     }
                     Status.ERROR -> {
                         rvUsers.visibility = View.VISIBLE
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
-                        ivNotFound.visibility = View.GONE
-                        tvNotFound.visibility = View.GONE
                         it.message?.let { it1 -> this.toast(it1) }
                     }
                     Status.LOADING -> {
                         shimmerContainer.startShimmer()
-                        shimmerContainer.visibility = View.VISIBLE
                         rvUsers.visibility = View.GONE
-                        ivSearch.visibility = View.GONE
-                        tvSearch.visibility = View.GONE
-                        ivNotFound.visibility = View.GONE
-                        tvNotFound.visibility = View.GONE
                     }
                 }
             }
         })
+    }
+
+    private fun setupActionBar() {
+        val title = "Favorite User's"
+        supportActionBar?.title = title
     }
 
     private fun setupData(users: List<User>) {
@@ -169,5 +110,4 @@ class MainActivity : AppCompatActivity() {
     private fun Context.toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 }

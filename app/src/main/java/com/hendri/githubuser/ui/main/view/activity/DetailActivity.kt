@@ -1,5 +1,6 @@
 package com.hendri.githubuser.ui.main.view.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -14,16 +15,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.snackbar.Snackbar
 import com.hendri.githubuser.R
-import com.hendri.githubuser.data.api.ApiHelper
+import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
+import com.hendri.githubuser.data.local.DatabaseBuilder
+import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.view.fragment.FollowersFragment
 import com.hendri.githubuser.ui.main.view.fragment.FollowingFragment
-import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
+import com.hendri.githubuser.ui.main.viewmodel.DetailViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.toolbar_custom.*
 import kotlin.math.abs
 
 class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
@@ -35,10 +40,8 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     private val PERCENTAGE_TO_ANIMATE_AVATAR = 20
     private var mIsAvatarShown = true
     private var mMaxScrollSize = 0
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: DetailViewModel
     private lateinit var user: User
-    private lateinit var following: String
-    private lateinit var followers: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +57,15 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         setupViewModel()
         setupObservers()
 
-        toolbar.setNavigationOnClickListener { onBackPressed() }
         appbarLayout.addOnOffsetChangedListener(this)
         mMaxScrollSize = appbarLayout.totalScrollRange
 
-        val adapter =
-            TabAdapter(
-                supportFragmentManager,
-                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-                user,
-                tabsName
-            )
+        val adapter = TabAdapter(
+            supportFragmentManager,
+            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+            user,
+            tabsName
+        )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
     }
@@ -78,7 +79,6 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         FragmentStatePagerAdapter(fm, behavior) {
 
         override fun getItem(position: Int): Fragment {
-
             val fragment: Fragment?
             fragment = when (position) {
                 0 -> FollowersFragment.newInstance(user)
@@ -101,7 +101,6 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         if (mMaxScrollSize == 0) mMaxScrollSize = appBarLayout!!.totalScrollRange
 
         val percentage: Int = abs(verticalOffset) * 100 / mMaxScrollSize
-
         if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
             mIsAvatarShown = false
             ivAvatar?.animate()
@@ -119,8 +118,12 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService)))
-            .get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this, ViewModelFactory(
+                ApiHelperImp(RetrofitBuilder.apiService),
+                DatabaseHelperImp(DatabaseBuilder.getInstance(applicationContext))
+            )
+        ).get(DetailViewModel::class.java)
     }
 
     private fun setupUI(user: User) {
@@ -142,8 +145,19 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
                 RequestOptions
                     .circleCropTransform()
                     .override(100, 100)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            )
             .into(ivAvatar)
+
+        ivBack.setOnClickListener { onBackPressed() }
+        ivFavorite.setOnClickListener {
+            viewModel.insert(user)
+            Snackbar.make(
+                rootLayout,
+                "Favorite User ${user.name}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun setupObservers() {
@@ -164,5 +178,9 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
                 }
             }
         })
+    }
+
+    private fun Context.toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

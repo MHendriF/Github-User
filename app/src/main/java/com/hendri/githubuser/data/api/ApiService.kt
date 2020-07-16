@@ -10,8 +10,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("search/users?q=he")
-    suspend fun getUsers() : Response<UserResponse<User>>
 
     @GET("search/users?")
     suspend fun searchUsers(@Query("q") username: String?) : Response<UserResponse<User>>
