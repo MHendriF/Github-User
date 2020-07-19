@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hendri.githubuser.R
@@ -23,7 +23,6 @@ import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.MainAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
-import com.hendri.githubuser.ui.main.view.activity.FavoriteActivity
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -59,33 +58,18 @@ class HomeFragment : Fragment() {
         setupSearchView()
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_setting -> {
-                val settingFragment = SettingsFragment()
-                val mFragmentManager = requireActivity().supportFragmentManager
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, settingFragment, SettingsFragment::class.java.simpleName)
-                    addToBackStack(null)
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    commit()
-                }
-                //startActivity(Intent(requireActivity(), PreferenceActivity::class.java))
-                return true
+                findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
+                true
             }
             R.id.action_favorite -> {
-                val favoriteFragment = FavoriteFragment()
-                val mFragmentManager = requireActivity().supportFragmentManager
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, favoriteFragment, FavoriteFragment::class.java.simpleName)
-                    addToBackStack(null)
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    commit()
-                }
-                //startActivity(Intent(requireActivity(), FavoriteActivity::class.java))
-                return true
+                findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
+                true
             }
-            else -> return true
+            else -> true
         }
     }
 
@@ -107,7 +91,6 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
         }
-
         rvUsers.addItemDecoration(
             DividerItemDecoration(
                 rvUsers.context,
@@ -115,9 +98,6 @@ class HomeFragment : Fragment() {
             )
         )
         rvUsers.adapter = adapter
-
-        shimmerContainer.stopShimmer()
-        shimmerContainer.visibility = View.GONE
     }
 
     private fun setupSearchView() {
@@ -175,8 +155,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupActionBar() {
-        val title = "Search Github User's"
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_home_fragment)
     }
 
     private fun setupData(users: List<User>) {

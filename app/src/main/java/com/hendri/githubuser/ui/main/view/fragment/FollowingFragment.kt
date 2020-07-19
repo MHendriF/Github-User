@@ -85,7 +85,6 @@ class FollowingFragment : Fragment() {
                 startActivity(intent)
             }
         }
-
         rvUsers.addItemDecoration(
             DividerItemDecoration(
                 rvUsers.context,

@@ -16,5 +16,5 @@
         android:id="@+id/action_setting"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always"
-        android:title="@string/setting" />
+        android:title="@string/settings" />
 </menu>

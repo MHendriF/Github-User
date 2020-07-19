@@ -114,8 +114,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setupActionBar() {
-        val title = "Settings"
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.settings)
     }
 
     private fun Context.toast(message: String) {

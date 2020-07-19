@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val BACK_STACK_ROOT_TAG = "root_fragment"
 //    private lateinit var viewModel: MainViewModel
 //    private lateinit var adapter: MainAdapter
 //    private lateinit var searchView: SearchView
@@ -44,15 +43,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 //        setupViewModel()
 //        setupUI()
-
-        val fragmentManager = supportFragmentManager
-        val homeFragment = HomeFragment()
-        fragmentManager
-            .beginTransaction()
-            .add(R.id.frame_container, homeFragment, HomeFragment::class.java.simpleName)
-            //.addToBackStack(BACK_STACK_ROOT_TAG)
-            .commit()
-
     }
 
 //    private fun setupViewModel() {

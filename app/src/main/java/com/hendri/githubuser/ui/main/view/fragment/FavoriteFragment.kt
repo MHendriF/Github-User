@@ -78,9 +78,6 @@ class FavoriteFragment : Fragment() {
             )
         )
         rvUsers.adapter = adapter
-
-        shimmerContainer.stopShimmer()
-        shimmerContainer.visibility = View.GONE
     }
 
     private fun setupObservers() {
@@ -109,8 +106,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setupActionBar() {
-        val title = "Favorite User's"
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_favorite_fragment)
     }
 
     private fun setupData(users: List<User>) {

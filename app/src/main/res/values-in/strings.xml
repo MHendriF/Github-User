@@ -5,7 +5,7 @@
     <string name="email">email@example.com</string>
     <string name="bio">biodata</string>
     <string name="search">Cari</string>
-    <string name="setting">Pengaturan</string>
+    <string name="settings">Pengaturan</string>
     <string name="followers">pengikut</string>
     <string name="following">mengikuti</string>
     <string name="search_hint">Masukkan kata pencarian</string>
@@ -26,4 +26,6 @@
     <string name="reminder_off">Pengingat harian mati</string>
     <string name="reminder_time_title">Atur pengingat</string>
     <string name="reminder_time_summary">Pengingat di atur pada jam %s</string>
+    <string name="title_home_fragment">Cari Pengguna</string>
+    <string name="title_favorite_fragment">Pengguna Favorit</string>
 </resources>
