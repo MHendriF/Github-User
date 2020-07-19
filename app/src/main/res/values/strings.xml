@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GithubUser</string>
+    <string name="app_name" translatable="false">GithubUser</string>
     <string name="username">username</string>
     <string name="name">name</string>
     <string name="email">email@example.com</string>
@@ -10,13 +10,31 @@
     <string name="following">following</string>
     <string name="search_hint">Enter keyword</string>
     <string name="repo">repo</string>
-    <string name="value_following">23</string>
-    <string name="value_followers">10</string>
-    <string name="value_repo">4</string>
+    <string name="value_following" translatable="false">23</string>
+    <string name="value_followers" translatable="false">10</string>
+    <string name="value_repo" translatable="false">4</string>
     <string name="image_backdrop">Image backdrop</string>
     <string name="image_icon">Image icon</string>
     <string name="image_avatar">Image avatar</string>
     <string name="user_not_found">User not found</string>
     <string name="search_text">Search for a github user</string>
     <string name="favorite">Favorite</string>
+    <string name="language">Language</string>
+    <string name="language_summary">Change language</string>
+    <string name="reminder">Daily reminder</string>
+    <string name="reminder_on">Daily reminder on</string>
+    <string name="reminder_off">Daily reminder off</string>
+    <string name="locale_key" translatable="false">locale</string>
+    <string name="reminder_key" translatable="false">reminder</string>
+    <string name="reminder_time_key" translatable="false">reminderTime</string>
+    <string name="reminder_time_title">Set reminder</string>
+    <string name="reminder_time_summary">Reminder set on %s</string>
+
+    <string name="title_preference" translatable="false"><b>You</b> <i>are</i> <u>awesome</u></string>
+    <string name="summary_preference" translatable="false">You can use some styles in your preferences by using the described way.</string>
+    <string name="title_stylish_preference" translatable="false">title_stylish_preference</string>
+    <string name="summary_stylish_preference" translatable="false">summary_stylish_preference</string>
+    <string name="dialog_title_preference" translatable="false">Dialog preferences</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/setting">
+
+        <Preference
+            android:icon="@drawable/ic_language"
+            android:summary="@string/language_summary"
+            android:title="@string/language"
+            app:key="@string/locale_key"/>
+
+        <SwitchPreference
+            android:icon="@drawable/ic_notifications"
+            app:key="@string/reminder_key"
+            app:summaryOff="@string/reminder_off"
+            app:summaryOn="@string/reminder_on"
+            app:title="@string/reminder" />
+
+        <Preference
+            android:icon="@drawable/ic_alarm"
+            android:dependency="@string/reminder_key"
+            app:key="@string/reminder_time_key"
+            app:summary="@string/reminder_time_summary"
+            app:title="@string/reminder_time_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

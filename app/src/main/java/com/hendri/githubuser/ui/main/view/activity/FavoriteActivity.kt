@@ -19,12 +19,8 @@ import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.MainAdapter
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
-import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.rvUsers
-import kotlinx.android.synthetic.main.activity_main.shimmerContainer
-import kotlinx.android.synthetic.main.fragment_followers.*
+import kotlinx.android.synthetic.main.activity_favorite.*
 
 class FavoriteActivity : AppCompatActivity() {
 

@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hendri.githubuser.R
-import com.hendri.githubuser.data.api.ApiHelper
 import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
 import com.hendri.githubuser.data.local.DatabaseBuilder
@@ -22,11 +21,9 @@ import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.FollowingAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
-import com.hendri.githubuser.ui.main.viewmodel.FollowersViewModel
 import com.hendri.githubuser.ui.main.viewmodel.FollowingViewModel
-import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
-import kotlinx.android.synthetic.main.fragment_following.*
+import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class FollowingFragment : Fragment() {
@@ -53,7 +50,7 @@ class FollowingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_following, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
