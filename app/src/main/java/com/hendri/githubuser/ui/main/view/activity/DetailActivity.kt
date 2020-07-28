@@ -93,8 +93,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     }
 
     private fun setupActionBar() {
-        val title = "Detail User"
-        supportActionBar?.title = title
+        supportActionBar?.title =  getString(R.string.title_detail_activity)
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
@@ -121,7 +120,8 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(applicationContext))
+                DatabaseHelperImp(DatabaseBuilder.getInstance(applicationContext)),
+                this.application
             )
         ).get(DetailViewModel::class.java)
     }

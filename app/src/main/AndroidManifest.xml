@@ -11,8 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.view.activity.PreferenceActivity"></activity>
-        <activity android:name=".ui.main.view.activity.FavoriteActivity" />
+
+        <receiver
+            android:name=".utils.reminder.BootReceiver"
+            android:enabled="true"/>
+        <receiver
+            android:name=".utils.reminder.ReminderReceiver"
+            android:enabled="true"/>
+
         <activity android:name=".ui.main.view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

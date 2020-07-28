@@ -1,6 +1,8 @@
 package com.hendri.githubuser.ui.main.viewmodel
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.hendri.githubuser.data.api.ApiHelper
@@ -11,8 +13,9 @@ import kotlinx.coroutines.Dispatchers
 
 class MainViewModel(
     private val apiHelper: ApiHelper,
-    private val dbHelper: DatabaseHelper
-) : ViewModel() {
+    private val dbHelper: DatabaseHelper,
+    application: Application
+) : AndroidViewModel(application) {
 
     fun searchUsers(username: String?) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))

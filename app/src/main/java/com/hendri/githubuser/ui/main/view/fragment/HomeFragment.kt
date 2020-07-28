@@ -1,14 +1,18 @@
 package com.hendri.githubuser.ui.main.view.fragment
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,15 +30,14 @@ import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.MainViewModel
 import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_empty.*
+import kotlinx.android.synthetic.main.layout_search.*
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
-    private lateinit var searchView: SearchView
-    private lateinit var searchManager: SearchManager
-    private lateinit var keyword: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,13 +52,11 @@ class HomeFragment : Fragment() {
         setupActionBar()
         setupViewModel()
         setupUI()
+        setupSearch()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-        searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView = menu.findItem(R.id.action_search).actionView as SearchView
-        setupSearchView()
     }
 
 
@@ -74,10 +75,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(
-            this, ViewModelFactory(
+        viewModel = ViewModelProvider(this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity()))
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
+                requireActivity().application
             )
         ).get(MainViewModel::class.java)
     }
@@ -100,22 +101,7 @@ class HomeFragment : Fragment() {
         rvUsers.adapter = adapter
     }
 
-    private fun setupSearchView() {
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-        searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                keyword = query.trim()
-                setupObservers()
-                return true
-            }
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-        })
-    }
-
-    private fun setupObservers() {
+    private fun setupObservers(keyword: String) {
         viewModel.searchUsers(keyword).observe(requireActivity(), Observer {
             it?.let { resource ->
                 when (resource.status) {
@@ -124,11 +110,9 @@ class HomeFragment : Fragment() {
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
                         if (resource.data?.size == 0) {
-                            ivNotFound.visibility = View.VISIBLE
-                            tvNotFound.visibility = View.VISIBLE
+                            backdropEmpty.visibility = View.VISIBLE
                         } else{
-                            ivNotFound.visibility = View.GONE
-                            tvNotFound.visibility = View.GONE
+                            backdropEmpty.visibility = View.GONE
                         }
                         resource.data?.let { users -> setupData(users) }
                     }
@@ -136,16 +120,14 @@ class HomeFragment : Fragment() {
                         rvUsers.visibility = View.VISIBLE
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
-                        ivNotFound.visibility = View.GONE
-                        tvNotFound.visibility = View.GONE
+                        backdropEmpty.visibility = View.GONE
                         it.message?.let { it1 -> requireContext().toast(it1) }
                     }
                     Status.LOADING -> {
                         shimmerContainer.startShimmer()
                         shimmerContainer.visibility = View.VISIBLE
                         rvUsers.visibility = View.GONE
-                        ivSearch.visibility = View.GONE
-                        tvSearch.visibility = View.GONE
+                        backdropSearch.visibility = View.GONE
                         ivNotFound.visibility = View.GONE
                         tvNotFound.visibility = View.GONE
                     }
@@ -165,7 +147,36 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun searchUser(keyword: String) {
+        if(!edtSearch.text.isBlank()){
+            rvUsers.requestFocus()
+            requireContext().hideKeyboard(requireView())
+            setupObservers(keyword)
+        } else {
+            requireContext().toast("Masukkan keyword pencarian")
+        }
+    }
+
+    private fun setupSearch() {
+        btnSearch.setOnClickListener {
+            searchUser(edtSearch.text.toString().trim())
+        }
+
+        edtSearch.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchUser(edtSearch.text.toString().trim())
+                return@OnEditorActionListener true
+            }
+            false
+        })
+    }
+
     private fun Context.toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

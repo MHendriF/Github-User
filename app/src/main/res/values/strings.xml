@@ -29,12 +29,14 @@
     <string name="reminder_time_key" translatable="false">reminderTime</string>
     <string name="reminder_time_title">Set reminder</string>
     <string name="reminder_time_summary">Reminder set on %s</string>
-    <string name="title_home_fragment">Search Github User\'s</string>
+    <string name="title_home_fragment">Github User\'s</string>
     <string name="title_favorite_fragment">Favorite User\'s</string>
+    <string name="title_detail_activity">Detail User</string>
 
-    <string name="title_preference" translatable="false"><b>You</b> <i>are</i> <u>awesome</u></string>
-    <string name="summary_preference" translatable="false">You can use some styles in your preferences by using the described way.</string>
-    <string name="title_stylish_preference" translatable="false">title_stylish_preference</string>
-    <string name="summary_stylish_preference" translatable="false">summary_stylish_preference</string>
-    <string name="dialog_title_preference" translatable="false">Dialog preferences</string>
+    <string name="channel_id" translatable="false">Channel_Reminder</string>
+    <string name="channel_name" translatable="false">Github User-%s</string>
+    <string name="notification_title" translatable="false">Daily Reminder</string>
+    <string name="notification_message" translatable="false">Let\'s find popular user from GitHub!</string>
+    <string name="notification_type" translatable="false">DailyReminder</string>
+    <string name="notification_description" translatable="false">Channel notification for daily reminder</string>
 </resources>

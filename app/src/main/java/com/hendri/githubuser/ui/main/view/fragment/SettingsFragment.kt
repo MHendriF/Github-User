@@ -12,8 +12,8 @@ import androidx.core.content.edit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.hendri.githubuser.ui.main.view.fragment.TimePickerFragment
 import com.hendri.githubuser.R
+import com.hendri.githubuser.utils.reminder.AlarmScheduler
 import java.time.LocalTime
 
 
@@ -40,12 +40,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupLocale()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupReminder() {
         reminderPref?.setOnPreferenceChangeListener { _, newValue ->
             if(newValue as Boolean){
-               requireContext().toast("reminder on")
+                requireContext().toast("reminder on")
+                AlarmScheduler.scheduleAlarm(requireContext())
             }else{
-                requireContext().toast("reminder of")
+                requireContext().toast("reminder off")
+                AlarmScheduler.cancelAlarm(requireContext())
             }
             true
         }
@@ -94,6 +97,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     pref.sharedPreferences.getString(pref.key, "")
                 )
                 //reschedule alarm
+                AlarmScheduler.scheduleAlarm(requireContext())
             }).show(childFragmentManager, TIME_PICKER_REMINDER)
     }
 
@@ -106,7 +110,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 pref.sharedPreferences.edit {
                     putString(
                         pref.key,
-                        LocalTime.of(12, 0).toString()
+                        LocalTime.of(9, 0).toString()
                     )
                 }
             }
