@@ -12,12 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <provider
+            android:name=".data.provider.UserContentProvider"
+            android:authorities="com.hendri.githubuser"
+            android:enabled="true"
+            android:exported="true" />
+
         <receiver
             android:name=".utils.reminder.BootReceiver"
-            android:enabled="true"/>
+            android:enabled="true" />
+
         <receiver
             android:name=".utils.reminder.ReminderReceiver"
-            android:enabled="true"/>
+            android:enabled="true" />
 
         <activity android:name=".ui.main.view.activity.MainActivity">
             <intent-filter>

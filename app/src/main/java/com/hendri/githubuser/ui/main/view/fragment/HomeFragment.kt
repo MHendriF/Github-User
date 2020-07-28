@@ -102,7 +102,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObservers(keyword: String) {
-        viewModel.searchUsers(keyword).observe(requireActivity(), Observer {
+        viewModel.searchUsers(keyword).observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
