@@ -1,11 +1,9 @@
 package com.hendri.githubuser.data.api
 
-import com.hendri.githubuser.BuildConfig
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.data.response.UserResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 

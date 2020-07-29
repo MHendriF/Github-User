@@ -1,6 +1,5 @@
 package com.hendri.githubuser.utils.helper
 
-
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.hendri.githubuser.R
 import com.hendri.githubuser.ui.main.view.activity.MainActivity
-
 
 object NotificationHelper {
     data class NotificationData(

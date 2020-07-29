@@ -16,7 +16,9 @@
             android:name=".data.provider.UserContentProvider"
             android:authorities="com.hendri.githubuser"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:readPermission="com.varoa.gituser.READ_DATABASE"
+            android:writePermission="com.varoa.gituser.WRITE_DATABASE" />
 
         <receiver
             android:name=".utils.reminder.BootReceiver"

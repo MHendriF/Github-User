@@ -13,8 +13,6 @@ class DetailViewModel(
     private val dbHelper: DatabaseHelper
 ) : ViewModel() {
 
-    private val users = MutableLiveData<Resource<List<User>>>()
-
     fun detailUser(username: String?) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
@@ -25,6 +23,6 @@ class DetailViewModel(
     }
 
     fun insert(user: User) = viewModelScope.launch(Dispatchers.IO) {
-        dbHelper.insert(user)
+        dbHelper.insertUser(user)
     }
 }

@@ -20,6 +20,6 @@ object DatabaseBuilder {
         Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "user_github_database"
+            "db_user_github"
         ).build()
 }

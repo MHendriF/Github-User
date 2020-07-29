@@ -36,6 +36,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvUsername"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername"
-        tools:text="Description" />
+        tools:text="Url" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

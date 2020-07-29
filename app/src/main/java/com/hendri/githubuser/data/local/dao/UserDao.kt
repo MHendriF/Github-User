@@ -34,7 +34,7 @@ interface UserDao {
     @Query("SELECT * from users ORDER BY login ASC")
     fun getWidgets(): List<User>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user : User) : Long
 
     @Update

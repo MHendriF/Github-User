@@ -120,7 +120,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(applicationContext)),
+                DatabaseHelperImp(DatabaseBuilder.getInstance(this.application)),
                 this.application
             )
         ).get(DetailViewModel::class.java)
@@ -129,13 +129,12 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     private fun setupUI(user: User) {
         tvName.text = user.name
         tvUsername.text = user.login
-        if (user.bio.isNullOrEmpty()) {
-            tvBio.visibility = View.GONE
-        } else {
-            tvBio.visibility = View.VISIBLE
-            tvBio.text = user.bio
-        }
+//        when {
+//            user.bio?.isEmpty() -> tvBio.visibility = View.GONE
+//            user.name?.isEmpty() -> tvName.visibility = View.GONE
+//        }
 
+        tvBio.text = user.bio
         tvRepo.text = user.public_repos.toString()
         tvFollowers.text = user.followers.toString()
         tvFollowing.text = user.following.toString()
@@ -170,7 +169,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
                     }
                     Status.ERROR -> {
                         progressbar.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                        it.message?.let { it1 -> this.toast(it1) }
                     }
                     Status.LOADING -> {
                         progressbar.visibility = View.VISIBLE
