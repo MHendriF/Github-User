@@ -71,8 +71,7 @@ class FollowersFragment : Fragment() {
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity())),
-                requireActivity().application
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity()))
             )
         ).get(FollowersViewModel::class.java)
     }

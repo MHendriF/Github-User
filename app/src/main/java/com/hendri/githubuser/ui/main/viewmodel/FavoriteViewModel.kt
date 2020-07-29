@@ -13,8 +13,6 @@ class FavoriteViewModel(
     private val dbHelper: DatabaseHelper
 ) : ViewModel() {
 
-    private val users = MutableLiveData<Resource<List<User>>>()
-
     fun fetchUsers() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
@@ -22,9 +20,5 @@ class FavoriteViewModel(
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
-    }
-
-    fun getUsers() = viewModelScope.launch(Dispatchers.IO) {
-        dbHelper.getUsers()
     }
 }

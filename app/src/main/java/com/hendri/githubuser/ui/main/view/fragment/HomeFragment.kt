@@ -1,18 +1,15 @@
 package com.hendri.githubuser.ui.main.view.fragment
 
 import android.app.Activity
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +36,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
-    private var TAG: String = "Trace"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,8 +79,7 @@ class HomeFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
-                requireActivity().application
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application))
             )
         ).get(MainViewModel::class.java)
     }

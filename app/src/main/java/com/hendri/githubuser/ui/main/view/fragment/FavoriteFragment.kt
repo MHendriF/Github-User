@@ -57,8 +57,7 @@ class FavoriteFragment : Fragment() {
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
-                requireActivity().application
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application))
             )
         ).get(FavoriteViewModel::class.java)
     }

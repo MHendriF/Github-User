@@ -120,8 +120,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(this.application)),
-                this.application
+                DatabaseHelperImp(DatabaseBuilder.getInstance(this.application))
             )
         ).get(DetailViewModel::class.java)
     }

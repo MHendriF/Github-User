@@ -23,61 +23,6 @@ object NotificationHelper {
         val type: String
     )
 
-    fun createChannel(
-        context: Context,
-        importance: Int,
-        showBadge: Boolean,
-        name: String,
-        description: String
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = context.getString(R.string.channel_name, name)
-            val channel = NotificationChannel(channelId, name, importance)
-            channel.description = description
-            channel.setShowBadge(showBadge)
-
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    private fun buildNotification(
-        context: Context,
-        data: NotificationData
-    ): NotificationCompat.Builder {
-        val channelId = context.getString(R.string.channel_name, data.type)
-
-        return NotificationCompat.Builder(context, channelId).apply {
-            setAutoCancel(true)
-            priority = NotificationCompat.PRIORITY_DEFAULT
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            setDefaults(NotificationCompat.DEFAULT_ALL)
-
-            //content
-            setSmallIcon(R.drawable.ic_notifications)
-            setContentTitle(data.title)
-            setContentText(data.message)
-
-            val intent = Intent(context, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                action = data.type
-            }
-            val pendingIntent =
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            setContentIntent(pendingIntent)
-        }
-    }
-
-    fun showNotification(
-        context: Context,
-        data: NotificationData
-    ) {
-        val notificationBuilder = buildNotification(context, data)
-        val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(data.notificationId, notificationBuilder.build())
-    }
-
     fun showAlarmNotification(
         context: Context,
         data: NotificationData
