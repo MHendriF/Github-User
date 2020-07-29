@@ -127,13 +127,11 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     }
 
     private fun setupUI(user: User) {
+        if (user.bio.isNullOrEmpty()) tvBio.visibility = View.GONE
+        if (user.name.isNullOrEmpty()) tvName.visibility = View.GONE
+
         tvName.text = user.name
         tvUsername.text = user.login
-//        when {
-//            user.bio?.isEmpty() -> tvBio.visibility = View.GONE
-//            user.name?.isEmpty() -> tvName.visibility = View.GONE
-//        }
-
         tvBio.text = user.bio
         tvRepo.text = user.public_repos.toString()
         tvFollowers.text = user.followers.toString()

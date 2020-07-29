@@ -5,6 +5,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -38,6 +39,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
+    private var TAG: String = "Trace"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,10 +57,14 @@ class HomeFragment : Fragment() {
         setupSearch()
     }
 
+    override fun onResume() {
+        super.onResume()
+        searchUser(edtSearch.text.toString().trim())
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -106,21 +112,19 @@ class HomeFragment : Fragment() {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        rvUsers.visibility = View.VISIBLE
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
                         if (resource.data?.size == 0) {
                             backdropEmpty.visibility = View.VISIBLE
                         } else{
+                            rvUsers.visibility = View.VISIBLE
                             backdropEmpty.visibility = View.GONE
                         }
                         resource.data?.let { users -> setupData(users) }
                     }
                     Status.ERROR -> {
-                        rvUsers.visibility = View.VISIBLE
                         shimmerContainer.stopShimmer()
                         shimmerContainer.visibility = View.GONE
-                        backdropEmpty.visibility = View.GONE
                         it.message?.let { it1 -> requireContext().toast(it1) }
                     }
                     Status.LOADING -> {
@@ -128,8 +132,7 @@ class HomeFragment : Fragment() {
                         shimmerContainer.visibility = View.VISIBLE
                         rvUsers.visibility = View.GONE
                         backdropSearch.visibility = View.GONE
-                        ivNotFound.visibility = View.GONE
-                        tvNotFound.visibility = View.GONE
+                        backdropEmpty.visibility = View.GONE
                     }
                 }
             }
@@ -152,8 +155,6 @@ class HomeFragment : Fragment() {
             rvUsers.requestFocus()
             requireContext().hideKeyboard(requireView())
             setupObservers(keyword)
-        } else {
-            requireContext().toast("Masukkan keyword pencarian")
         }
     }
 
