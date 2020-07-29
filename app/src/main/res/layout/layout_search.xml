@@ -14,7 +14,6 @@
         android:src="@drawable/github_logo" />
 
     <TextView
-        android:id="@+id/tvSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivSearch"

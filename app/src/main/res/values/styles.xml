@@ -7,7 +7,4 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ToolBarWithNavigationBack">
-        <item name="navigationIcon">@drawable/ic_back</item>
-    </style>
 </resources>
