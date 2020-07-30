@@ -12,6 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <receiver android:name=".utils.widget.FavoriteUsersAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_users_app_widget_info" />
+        </receiver>
+
+        <service
+            android:name="com.hendri.githubuser.utils.widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <provider
             android:name=".data.provider.UserContentProvider"
             android:authorities="com.hendri.githubuser"
@@ -23,7 +37,6 @@
         <receiver
             android:name=".utils.reminder.BootReceiver"
             android:enabled="true" />
-
         <receiver
             android:name=".utils.reminder.ReminderReceiver"
             android:enabled="true" />
