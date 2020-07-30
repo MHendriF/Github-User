@@ -2,6 +2,7 @@ package com.hendri.githubuser.data.local
 
 import android.content.Context
 import androidx.room.Room
+import com.hendri.githubuser.utils.DATABASE_NAME
 
 object DatabaseBuilder {
 
@@ -20,6 +21,6 @@ object DatabaseBuilder {
         Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "db_user_github"
+            DATABASE_NAME
         ).build()
 }

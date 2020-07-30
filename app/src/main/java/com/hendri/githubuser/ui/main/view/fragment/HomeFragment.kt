@@ -79,7 +79,8 @@ class HomeFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application))
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
+                requireContext()
             )
         ).get(MainViewModel::class.java)
     }

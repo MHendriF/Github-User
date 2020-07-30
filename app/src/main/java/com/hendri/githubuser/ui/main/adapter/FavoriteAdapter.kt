@@ -11,11 +11,11 @@ import com.hendri.githubuser.R
 import com.hendri.githubuser.data.model.User
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class MainAdapter(
+class FavoriteAdapter (
     private val users: ArrayList<User>,
     private val listener: (User) -> Unit
 ) :
-    RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+    RecyclerView.Adapter<FavoriteAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
@@ -26,9 +26,9 @@ class MainAdapter(
                     .load(user.avatar_url)
                     .apply(
                         RequestOptions
-                        .circleCropTransform()
-                        .override(100, 100)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .circleCropTransform()
+                            .override(100, 100)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(ivAvatar)
             }
         }

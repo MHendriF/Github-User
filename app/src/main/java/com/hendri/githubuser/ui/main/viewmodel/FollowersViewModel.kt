@@ -1,5 +1,6 @@
 package com.hendri.githubuser.ui.main.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -9,8 +10,7 @@ import com.hendri.githubuser.utils.Resource
 import kotlinx.coroutines.Dispatchers
 
 class FollowersViewModel(
-    private val apiHelper: ApiHelper,
-    private val dbHelper: DatabaseHelper
+    private val apiHelper: ApiHelper
 ) : ViewModel()  {
 
     fun getFollowers(username: String?) = liveData(Dispatchers.IO) {

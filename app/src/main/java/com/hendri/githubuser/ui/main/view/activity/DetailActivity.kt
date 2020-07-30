@@ -120,7 +120,8 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(this.application))
+                DatabaseHelperImp(DatabaseBuilder.getInstance(this.application)),
+                this
             )
         ).get(DetailViewModel::class.java)
     }
@@ -150,7 +151,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
             viewModel.insert(user)
             Snackbar.make(
                 rootLayout,
-                "Favorite User ${user.name}",
+                "Favorite user ${user.login}",
                 Snackbar.LENGTH_SHORT
             ).show()
         }

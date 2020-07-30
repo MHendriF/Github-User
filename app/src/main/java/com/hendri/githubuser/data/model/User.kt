@@ -17,7 +17,8 @@ data class User(
     var login: String? = "",
     @ColumnInfo(name = COLUMN_AVATAR)
     var avatar_url: String? = "",
-    @ColumnInfo(name = COLUMN_URL)
+    @ColumnInfo(name = COLUMN_HTML_URL)
+    var html_url: String? = "",
     var url: String? = "",
     var name: String? = "",
     var company: String? = "",
@@ -26,7 +27,6 @@ data class User(
     var email: String? = "",
     var bio: String? = "",
     var node_id: String? = "",
-    var html_url: String? = "",
     var organizations_url: String? = "",
     var repos_url: String? = "",
     var followers: Int? = 0,
@@ -39,7 +39,7 @@ data class User(
         const val COLUMN_ID = "id"
         const val COLUMN_LOGIN = "login"
         const val COLUMN_AVATAR = "avatar_url"
-        const val COLUMN_URL = "url"
+        const val COLUMN_HTML_URL = "html_url"
 
         fun fromContentValues(values: ContentValues?): User {
             return User().apply {
@@ -53,8 +53,8 @@ data class User(
                     if (values.containsKey(COLUMN_AVATAR)) {
                         this.avatar_url = values.getAsString(COLUMN_AVATAR)
                     }
-                    if (values.containsKey(COLUMN_URL)) {
-                        this.url = values.getAsString(COLUMN_URL)
+                    if (values.containsKey(COLUMN_HTML_URL)) {
+                        this.html_url = values.getAsString(COLUMN_HTML_URL)
                     }
                 }
             }

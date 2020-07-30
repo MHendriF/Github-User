@@ -3,6 +3,7 @@ package com.hendri.githubuser.utils.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -16,20 +17,65 @@ import com.hendri.githubuser.ui.main.view.activity.MainActivity
 class FavoriteUsersAppWidget : AppWidgetProvider() {
 
     companion object {
-        const val ACTION_TOUCH = "ACTION_TOUCH"
-        const val EXTRA_ITEM = "EXTRA_ITEM"
-        const val WIDGET_PENDING_INTENT_CODE = 32
+
+        fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
+
+            // Intent load data from database
+            val intent = Intent(context, StackWidgetService::class.java).apply {
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                data = toUri(Intent.URI_INTENT_SCHEME).toUri()
+            }
+
+            // Intent to MainActivity
+            val tittleIntent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val tittlePendingIntent = PendingIntent.getActivity(context, 0, tittleIntent, 0)
+
+            val views = RemoteViews(
+                context.packageName,
+                R.layout.favorite_users_app_widget
+            ).apply {
+                setRemoteAdapter(R.id.stackView, intent)
+                setEmptyView(R.id.stackView, R.id.emptyView)
+                setOnClickPendingIntent( R.id.tvTitleWidget, tittlePendingIntent)
+            }
+
+            //update app widget
+            appWidgetManager.updateAppWidget(appWidgetId, views)
+        }
+
+        fun sendRefreshBroadcast(context: Context) {
+            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE).apply {
+                component = ComponentName(context, FavoriteUsersAppWidget::class.java)
+            }
+            context.sendBroadcast(intent)
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-        if (intent?.action != null)
-            if (intent.action == ACTION_TOUCH) {
-                Intent(context, MainActivity::class.java).also {
-                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    context?.startActivity(it)
+        intent?.let {
+            if (it.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
+                // refresh all your widgets
+                val component = context?.let { context ->
+                    ComponentName(
+                        context,
+                        FavoriteUsersAppWidget::class.java
+                    )
+                }
+                AppWidgetManager.getInstance(context).apply {
+                    notifyAppWidgetViewDataChanged(
+                        getAppWidgetIds(component),
+                        R.id.ivStackWidget
+                    )
                 }
             }
+        }
+        super.onReceive(context, intent)
     }
 
     override fun onUpdate(
@@ -51,40 +97,3 @@ class FavoriteUsersAppWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 }
-
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-
-    val intent = Intent(context, StackWidgetService::class.java)
-    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
-
-    val touchIntent = Intent(context, FavoriteUsersAppWidget::class.java).apply {
-        action = FavoriteUsersAppWidget.ACTION_TOUCH
-        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
-    }
-
-    val views = RemoteViews(
-        context.packageName,
-        R.layout.favorite_users_app_widget
-    )
-    views.setRemoteAdapter(R.id.stackView, intent)
-    views.setEmptyView(R.id.stackView, R.id.emptyView)
-    views.setPendingIntentTemplate(
-        R.id.ivStackWidget,
-        PendingIntent.getBroadcast(
-            context,
-            FavoriteUsersAppWidget.WIDGET_PENDING_INTENT_CODE,
-            touchIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-    )
-
-    //update app widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
-}
-

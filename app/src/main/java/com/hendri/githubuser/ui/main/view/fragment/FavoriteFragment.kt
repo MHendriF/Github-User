@@ -3,17 +3,19 @@ package com.hendri.githubuser.ui.main.view.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
@@ -21,16 +23,22 @@ import com.hendri.githubuser.data.local.DatabaseBuilder
 import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
+import com.hendri.githubuser.ui.main.adapter.FavoriteAdapter
 import com.hendri.githubuser.ui.main.adapter.MainAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
 import com.hendri.githubuser.utils.Status
+import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.rvUsers
+import kotlinx.android.synthetic.main.fragment_main.shimmerContainer
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel
-    private lateinit var adapter: MainAdapter
+    private lateinit var adapter: FavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,30 +49,26 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                // in here you can do logic when backPress is clicked
-//            }
-//        })
-
         setupActionBar()
         setupViewModel()
         setupUI()
         setupObservers()
+        setupItemTouch()
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application))
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
+                requireContext()
             )
         ).get(FavoriteViewModel::class.java)
     }
 
     private fun setupUI() {
         rvUsers.layoutManager = LinearLayoutManager(requireActivity())
-        adapter = MainAdapter(arrayListOf()) { user ->
+        adapter = FavoriteAdapter(arrayListOf()) { user ->
             user.let {
                 val intent = Intent(requireActivity(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_USER, user)
@@ -103,6 +107,39 @@ class FavoriteFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupItemTouch() {
+        // Add the functionality to swipe items in the
+        // recycler view to delete that item
+        val helper = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    val position = viewHolder.adapterPosition
+                    val user: User? = adapter.getUserAtPosition(position)
+
+                    // Delete the word
+                    requireContext().toast("Delete user ${user?.login} from favorite")
+                    if (user != null) {
+                        viewModel.deleteUser(user)
+                    }
+                }
+            })
+        helper.attachToRecyclerView(rvUsers)
     }
 
     private fun setupActionBar() {
