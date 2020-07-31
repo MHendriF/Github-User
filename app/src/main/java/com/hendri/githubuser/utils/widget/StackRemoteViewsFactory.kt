@@ -22,18 +22,11 @@ import com.hendri.githubuser.data.local.DatabaseBuilder
 import com.hendri.githubuser.data.local.DatabaseHelper
 import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
-import com.hendri.githubuser.data.provider.UserContentProvider
-import com.hendri.githubuser.data.source.UserDataSource
-import com.hendri.githubuser.utils.Constants
-import com.hendri.githubuser.utils.USER_CONTENT_URI
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class StackRemoteViewsFactory(private val context: Context) :
     RemoteViewsService.RemoteViewsFactory {
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var users: List<User>
-    private lateinit var dataSource: UserDataSource
     private var TAG: String = "Trace"
 
     override fun onCreate() {
@@ -41,9 +34,9 @@ class StackRemoteViewsFactory(private val context: Context) :
     }
 
     override fun onDataSetChanged() {
+        //users = getUsers()
         users = getFavoriteUsers()
-        //dataSource = UserDataSource(context.contentResolver)
-        //users = getFavoriteUser()
+        Log.d(TAG, "onDataSetChanged: ${users.size}")
     }
 
     override fun getViewAt(position: Int): RemoteViews {
@@ -90,12 +83,6 @@ class StackRemoteViewsFactory(private val context: Context) :
         return bitmap
     }
 
-    suspend fun getFavoriteUser() : List<User>{
-        return withContext(Dispatchers.IO){
-            dataSource.fetchUsers()
-        }
-    }
-
     private fun getFavoriteUsers(): List<User> {
         val users = ArrayList<User>()
         val cursor = dbHelper.getAllUsersAsCursor()
@@ -114,7 +101,27 @@ class StackRemoteViewsFactory(private val context: Context) :
             }
             cursor.close()
         }
+        return users
+    }
 
+    private fun getUsers(): List<User> {
+        val users = dbHelper.getUsers()
+
+//        val users = ArrayList<User>()
+//        val cursor = context.contentResolver?.query(USER_CONTENT_URI.toUri(), null, null, null, null)
+//        cursor?.let {
+//            while (cursor.moveToNext()) {
+//                User(
+//                    id = cursor.getLong(cursor.getColumnIndexOrThrow(User.COLUMN_ID)),
+//                    login = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_LOGIN)),
+//                    avatar_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_AVATAR)),
+//                    html_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_HTML_URL))
+//                ).also {
+//                    users.add(it)
+//                }
+//            }
+//            cursor.close()
+//        }
         return users
     }
 
@@ -128,5 +135,7 @@ class StackRemoteViewsFactory(private val context: Context) :
 
     override fun getViewTypeCount(): Int = 1
 
-    override fun onDestroy() {}
+    override fun onDestroy() {
+        users = listOf()
+    }
 }

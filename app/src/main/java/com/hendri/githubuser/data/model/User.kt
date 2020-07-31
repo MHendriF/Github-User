@@ -41,7 +41,7 @@ data class User(
         const val COLUMN_AVATAR = "avatar_url"
         const val COLUMN_HTML_URL = "html_url"
 
-        fun fromContentValues(values: ContentValues?): User {
+        fun toUserModel(values: ContentValues?): User {
             return User().apply {
                 if (values != null) {
                     if (values.containsKey(COLUMN_ID)) {
@@ -59,5 +59,13 @@ data class User(
                 }
             }
         }
+
+        fun toContentValues(user: User): ContentValues =
+            ContentValues().apply {
+                put(COLUMN_ID, user.id)
+                put(COLUMN_LOGIN, user.login)
+                put(COLUMN_AVATAR, user.avatar_url)
+                put(COLUMN_HTML_URL, user.html_url)
+            }
     }
 }

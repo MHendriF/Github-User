@@ -3,6 +3,8 @@
     package="com.hendri.githubuser">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission android:name="com.hendri.githubuser.READ_DATABASE" android:protectionLevel="normal" />
+    <permission android:name="com.hendri.githubuser.WRITE_DATABASE" android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +25,7 @@
         </receiver>
 
         <service
-            android:name="com.hendri.githubuser.utils.widget.StackWidgetService"
+            android:name=".utils.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <provider
@@ -31,8 +33,8 @@
             android:authorities="com.hendri.githubuser"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="com.varoa.gituser.READ_DATABASE"
-            android:writePermission="com.varoa.gituser.WRITE_DATABASE" />
+            android:readPermission="com.hendri.githubuser.READ_DATABASE"
+            android:writePermission="com.hendri.githubuser.WRITE_DATABASE" />
 
         <receiver
             android:name=".utils.reminder.BootReceiver"

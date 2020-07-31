@@ -27,7 +27,7 @@ class ViewModelFactory(
                 return FollowingViewModel(apiHelper) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                return DetailViewModel(apiHelper, dbHelper) as T
+                return DetailViewModel(apiHelper, dbHelper, context) as T
             }
             modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
                 return FavoriteViewModel(dbHelper, context) as T

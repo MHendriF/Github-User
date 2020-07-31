@@ -132,10 +132,10 @@ class FavoriteFragment : Fragment() {
                     val position = viewHolder.adapterPosition
                     val user: User? = adapter.getUserAtPosition(position)
 
-                    // Delete the word
+                    // Delete the user
                     requireContext().toast("Delete user ${user?.login} from favorite")
                     if (user != null) {
-                        viewModel.deleteUser(user)
+                        viewModel.deleteUserById(user)
                     }
                 }
             })

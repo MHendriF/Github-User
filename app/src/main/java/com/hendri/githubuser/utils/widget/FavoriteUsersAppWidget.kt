@@ -6,10 +6,12 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.net.toUri
 import com.hendri.githubuser.R
 import com.hendri.githubuser.ui.main.view.activity.MainActivity
+
 
 /**
  * Implementation of App Widget functionality.
@@ -50,10 +52,26 @@ class FavoriteUsersAppWidget : AppWidgetProvider() {
         }
 
         fun sendRefreshBroadcast(context: Context) {
-            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE).apply {
-                component = ComponentName(context, FavoriteUsersAppWidget::class.java)
+//            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE).apply {
+//                component = ComponentName(context, FavoriteUsersAppWidget::class.java)
+//            }
+//            Log.d("Trace", "sendRefreshBroadcast: ")
+//            context.sendBroadcast(intent)
+
+
+            Log.d("Trace", "sendRefreshBroadcast: ")
+            val component = context?.let { context ->
+                ComponentName(
+                    context,
+                    FavoriteUsersAppWidget::class.java
+                )
             }
-            context.sendBroadcast(intent)
+            AppWidgetManager.getInstance(context).apply {
+                notifyAppWidgetViewDataChanged(
+                    getAppWidgetIds(component),
+                    R.id.ivStackWidget
+                )
+            }
         }
     }
 

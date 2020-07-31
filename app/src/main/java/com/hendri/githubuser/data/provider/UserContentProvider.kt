@@ -1,8 +1,11 @@
 package com.hendri.githubuser.data.provider
 
+import android.app.Application
 import android.content.*
 import android.database.Cursor
 import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import com.hendri.githubuser.data.local.AppDatabase
 import com.hendri.githubuser.data.local.DatabaseBuilder
 import com.hendri.githubuser.data.local.DatabaseHelper
@@ -10,12 +13,14 @@ import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.local.dao.UserDao
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.utils.DATABASE_AUTHORITY
+import com.hendri.githubuser.utils.USER_CONTENT_URI
 import com.hendri.githubuser.utils.USER_TABLE_NAME
 import com.hendri.githubuser.utils.widget.FavoriteUsersAppWidget
 
 class UserContentProvider : ContentProvider() {
 
     private lateinit var mContext: Context
+    private var TAG = "Trace UserContentProvider"
 
     companion object {
         private const val USER = 1
@@ -45,7 +50,10 @@ class UserContentProvider : ContentProvider() {
         selectionArgs: Array<String>?, sortOrder: String?
     ): Cursor? {
         return when (MATCHER.match(uri)) {
-            USER -> dbHelper.getAllUsersAsCursor()
+            USER -> {
+                Log.d(TAG, "query: $uri")
+                dbHelper.getAllUsersAsCursor()
+            }
             USER_ID -> dbHelper.getUserAsCursor((ContentUris.parseId(uri)))
             else -> null
         }.apply {
@@ -56,8 +64,10 @@ class UserContentProvider : ContentProvider() {
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         return when (MATCHER.match(uri)) {
             USER -> {
-                val id: Long = dbHelper.insertUser(User.fromContentValues(values))
+                val id: Long = dbHelper.insertUser(User.toUserModel(values))
                 mContext.contentResolver.notifyChange(uri, null)
+                // Refresh data in refreshWidgetFavoriteUsers
+                refreshWidgetFavoriteUsers()
                 ContentUris.withAppendedId(uri, id)
             }
             USER_ID -> {
@@ -78,8 +88,10 @@ class UserContentProvider : ContentProvider() {
                 throw IllegalArgumentException("Invalid URI, cannot update without ID: $uri")
             }
             USER_ID -> {
-                val id: Int = dbHelper.updateUser(User.fromContentValues(values))
+                val id: Int = dbHelper.updateUser(User.toUserModel(values))
                 mContext.contentResolver.notifyChange(uri, null)
+                // Refresh data in refreshWidgetFavoriteUsers
+                refreshWidgetFavoriteUsers()
                 id
             }
             else -> {
@@ -96,6 +108,8 @@ class UserContentProvider : ContentProvider() {
             USER_ID -> {
                 val id: Int = dbHelper.deleteUserById(ContentUris.parseId(uri))
                 mContext.contentResolver.notifyChange(uri, null)
+                // Refresh data in refreshWidgetFavoriteUsers
+                refreshWidgetFavoriteUsers()
                 id
             }
             else -> {
@@ -104,12 +118,12 @@ class UserContentProvider : ContentProvider() {
         }
     }
 
+
     override fun getType(uri: Uri): String? {
         return null
     }
 
-    private fun refreshWidgetUser() {
-        // Refresh data in UserWidget
+    private fun refreshWidgetFavoriteUsers() {
         FavoriteUsersAppWidget.sendRefreshBroadcast(mContext.applicationContext)
     }
 

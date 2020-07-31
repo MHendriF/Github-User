@@ -148,7 +148,8 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
 
         ivBack.setOnClickListener { onBackPressed() }
         ivFavorite.setOnClickListener {
-            viewModel.insert(user)
+            //viewModel.insert(user)
+            viewModel.insertUser(user)
             Snackbar.make(
                 rootLayout,
                 "Favorite user ${user.login}",

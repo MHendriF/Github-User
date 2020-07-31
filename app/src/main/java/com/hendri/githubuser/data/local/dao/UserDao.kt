@@ -26,6 +26,6 @@ interface UserDao {
     @Query("SELECT * from users WHERE id = :id")
     fun getUserAsCursor(id : Long?) : Cursor?
 
-    @Query("SELECT * from users WHERE id = :id")
+    @Query("DELETE from users WHERE id = :id")
     fun deleteUserById(id: Long?): Int
 }
