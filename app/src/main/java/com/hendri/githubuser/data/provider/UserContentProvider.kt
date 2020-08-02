@@ -40,7 +40,7 @@ class UserContentProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         mContext = context as Context
-        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(mContext))
+        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(mContext.applicationContext))
         return true
     }
 

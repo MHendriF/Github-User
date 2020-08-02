@@ -75,24 +75,22 @@ class MainRepository(
     }
 
     private fun getUserCursorAsModel(): List<User> {
-        val result: MutableList<User> = mutableListOf()
+        val users: MutableList<User> = mutableListOf()
         val cursor = context.contentResolver?.query(USER_CONTENT_URI.toUri(), null, null, null, null)
         cursor?.let {
-            cursor.moveToFirst()
-            while (!cursor.isAfterLast) {
-                result.add(
-                    User(
-                        id = cursor.getLong(cursor.getColumnIndexOrThrow(User.COLUMN_ID)),
-                        login = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_LOGIN)),
-                        avatar_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_AVATAR)),
-                        html_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_HTML_URL))
-                    )
-                )
-                cursor.moveToNext()
+            while (cursor.moveToNext()) {
+                User(
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow(User.COLUMN_ID)),
+                    login = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_LOGIN)),
+                    avatar_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_AVATAR)),
+                    html_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_HTML_URL))
+                ).also {
+                    users.add(it)
+                }
             }
             cursor.close()
         }
-        return result.toList()
+        return users.toList()
     }
 
 }

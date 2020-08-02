@@ -20,7 +20,7 @@ class FavoriteViewModel(
 
     val favoriteUsers: LiveData<List<User>> = mainRepository.getAllUsers()
 
-    var myUsers: LiveData<List<User>> = liveData {
+    var getFavoriteUsers: LiveData<List<User>> = liveData {
         emit(mainRepository.getFavoriteUsers())
     }
 

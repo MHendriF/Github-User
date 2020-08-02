@@ -52,14 +52,6 @@ class FavoriteUsersAppWidget : AppWidgetProvider() {
         }
 
         fun sendRefreshBroadcast(context: Context) {
-//            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE).apply {
-//                component = ComponentName(context, FavoriteUsersAppWidget::class.java)
-//            }
-//            Log.d("Trace", "sendRefreshBroadcast: ")
-//            context.sendBroadcast(intent)
-
-
-            Log.d("Trace", "sendRefreshBroadcast: ")
             val component = context?.let { context ->
                 ComponentName(
                     context,

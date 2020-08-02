@@ -25,7 +25,6 @@ import com.hendri.githubuser.ui.base.ViewModelFactory
 import com.hendri.githubuser.ui.main.adapter.UserFavoriteAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
-import com.hendri.githubuser.utils.Status
 import kotlinx.android.synthetic.main.fragment_main.*
 import timber.log.Timber
 
@@ -57,7 +56,7 @@ class FavoriteFragment : Fragment() {
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
                 DatabaseHelperImp(DatabaseBuilder.getInstance(requireContext().applicationContext)),
-                requireContext(),
+                requireContext().applicationContext,
                 requireActivity().application
             )
         ).get(FavoriteViewModel::class.java)
