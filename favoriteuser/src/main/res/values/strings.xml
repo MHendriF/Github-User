@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">FavoriteUser</string>
-    <string name="username">username</string>
-    <string name="name">name</string>
-    <string name="bio">bio</string>
     <string name="image_backdrop">Image backdrop</string>
-    <string name="image_icon">Image icon</string>
     <string name="image_avatar">Image avatar</string>
     <string name="user_not_found">User not found</string>
-    <string name="favorite">Favorite</string>
     <string name="title_favorite_fragment">Favorite User\'s</string>
-    <string name="title_detail_activity">Detail User</string>
-    <string name="favorite_users" translatable="false">Favorite Users</string>
-    <string name="empty_data" translatable="false">No data</string>
     <string name="empty_favorite">There are no favorite users</string>
 </resources>

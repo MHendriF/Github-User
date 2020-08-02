@@ -9,3 +9,4 @@ const val DATABASE_CONTENT_URI = "$DATABASE_SCHEME://$DATABASE_AUTHORITY"
 /* --- Database Table User --- */
 const val USER_TABLE_NAME = "users"
 const val USER_CONTENT_URI = "$DATABASE_CONTENT_URI/$USER_TABLE_NAME"
+

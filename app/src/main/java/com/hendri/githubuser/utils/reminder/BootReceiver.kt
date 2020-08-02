@@ -11,7 +11,6 @@ class BootReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action.equals("android.intent.action.BOOT_COMPLETED")) {
-            //reshedule alarm setelah restart
             AlarmScheduler.scheduleAlarm(context)
         }
     }

@@ -34,7 +34,6 @@ class ReminderReceiver : BroadcastReceiver() {
             context.getString(R.string.notification_message),
             context.getString(R.string.notification_type)
         )
-        //NotificationHelper.showNotification(context, data)
         NotificationHelper.showAlarmNotification(context, data)
     }
 }

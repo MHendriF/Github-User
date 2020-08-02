@@ -34,10 +34,9 @@
     <string name="channel_id" translatable="false">Channel_Reminder</string>
     <string name="channel_name" translatable="false">Github User-%s</string>
     <string name="notification_title" translatable="false">Daily Reminder</string>
-    <string name="notification_message" translatable="false">Let\'s find popular user from GitHub!</string>
+    <string name="notification_message" translatable="false">Let\'s find popular user from Github!</string>
     <string name="notification_type" translatable="false">DailyReminder</string>
     <string name="appwidget_text" translatable="false">EXAMPLE</string>
-    <string name="add_widget" translatable="false">Add widget</string>
     <string name="favorite_users" translatable="false">Favorite Users</string>
     <string name="empty_data" translatable="false">No data</string>
     <string name="empty_favorite">There are no favorite users</string>

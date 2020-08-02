@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="username">username</string>
-    <string name="name">nama</string>
-    <string name="bio">biodata</string>
     <string name="image_backdrop">Gambar latar</string>
-    <string name="image_icon">Gambar ikon</string>
     <string name="image_avatar">Gambar avatar</string>
     <string name="user_not_found">User tidak ditemukan</string>
-    <string name="favorite">Favorite</string>
     <string name="title_favorite_fragment">Pengguna Favorit</string>
-    <string name="title_detail_activity">Detail Pengguna</string>
     <string name="empty_favorite">Tidak ada user yang difavoritkan</string>
 </resources>

@@ -52,11 +52,6 @@ class HomeFragment : Fragment() {
         setupSearch()
     }
 
-    override fun onResume() {
-        super.onResume()
-        searchUser(edtSearch.text.toString().trim())
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
     }
