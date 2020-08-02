@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -52,7 +51,6 @@ class FavoriteFragment : Fragment() {
     private fun setupObservers() {
         viewModel.getFavoriteUsers.observe(viewLifecycleOwner, Observer {
             it.let {
-                Log.d("trace", "setupObservers: ${it.size}")
                 setupData(it)
             }
         })
@@ -73,7 +71,8 @@ class FavoriteFragment : Fragment() {
 
 
     private fun setupActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_favorite_fragment)
+        (activity as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.title_favorite_fragment)
     }
 
     private fun setupData(users: List<User>) {
@@ -81,9 +80,5 @@ class FavoriteFragment : Fragment() {
             addUsers(users)
             notifyDataSetChanged()
         }
-    }
-
-    private fun Context.toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

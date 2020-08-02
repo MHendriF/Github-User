@@ -21,8 +21,10 @@ class FavoriteAdapter (
             itemView.apply {
                 tvUsername.text = user.login
                 tvUrl.text = user.html_url
+
                 Glide.with(ivAvatar.context)
                     .load(user.avatar_url)
+                    .error(R.drawable.noimage)
                     .apply(
                         RequestOptions
                             .circleCropTransform()
