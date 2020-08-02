@@ -11,4 +11,7 @@
         tools:listitem="@layout/item_user"
         android:visibility="gone"/>
 
+    <include
+        layout="@layout/layout_empty"
+        android:visibility="gone" />
 </FrameLayout>

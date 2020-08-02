@@ -20,10 +20,6 @@ class FavoriteViewModel(
 
     val favoriteUsers: LiveData<List<User>> = mainRepository.getAllUsers()
 
-    var getFavoriteUsers: LiveData<List<User>> = liveData {
-        emit(mainRepository.getFavoriteUsers())
-    }
-
     fun deleteUserById(user: User) = viewModelScope.launch(Dispatchers.IO) {
         mainRepository.deleteUserById(user)
     }

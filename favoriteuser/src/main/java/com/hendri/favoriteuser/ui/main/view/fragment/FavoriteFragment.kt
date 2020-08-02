@@ -18,6 +18,7 @@ import com.hendri.favoriteuser.ui.base.ViewModelFactory
 import com.hendri.favoriteuser.ui.main.adapter.FavoriteAdapter
 import com.hendri.favoriteuser.ui.main.viewmodel.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.layout_empty.*
 
 class FavoriteFragment : Fragment() {
 
@@ -51,7 +52,14 @@ class FavoriteFragment : Fragment() {
     private fun setupObservers() {
         viewModel.getFavoriteUsers.observe(viewLifecycleOwner, Observer {
             it.let {
-                setupData(it)
+                if(it.isNotEmpty()){
+                    setupData(it)
+                    rvUsers.visibility = View.VISIBLE
+                } else {
+                    tvNotFound.text = getString(R.string.empty_favorite)
+                    backdropEmpty.visibility = View.VISIBLE
+                    rvUsers.visibility = View.GONE
+                }
             }
         })
     }
@@ -66,7 +74,7 @@ class FavoriteFragment : Fragment() {
             )
         )
         rvUsers.adapter = adapter
-        rvUsers.visibility = View.VISIBLE
+
     }
 
 

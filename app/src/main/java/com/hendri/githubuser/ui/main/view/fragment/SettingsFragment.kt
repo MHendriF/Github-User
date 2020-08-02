@@ -84,19 +84,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         TimePickerFragment(
             LocalTime.parse(prefTime),
             TimePickerFragment.TimePickerListener { hour, minute ->
-                //update preference
                 pref.sharedPreferences.edit {
                     putString(
                         pref.key,
                         LocalTime.of(hour, minute).toString()
                     )
                 }
-                //update summary preference manually ;v
                 pref.summary = requireContext().getString(
                     R.string.reminder_time_summary,
                     pref.sharedPreferences.getString(pref.key, "")
                 )
-                //reschedule alarm
                 AlarmScheduler.scheduleAlarm(requireContext())
             }).show(childFragmentManager, TIME_PICKER_REMINDER)
     }
@@ -106,7 +103,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         pref?.let {
             val time = pref.sharedPreferences.getString(pref.key, null)
             if(time == null){
-                //set new value
                 pref.sharedPreferences.edit {
                     putString(
                         pref.key,

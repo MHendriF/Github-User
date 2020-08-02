@@ -26,6 +26,7 @@ import com.hendri.githubuser.ui.main.adapter.FavoriteAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.layout_empty.*
 import timber.log.Timber
 
 class FavoriteFragment : Fragment() {
@@ -64,8 +65,15 @@ class FavoriteFragment : Fragment() {
     private fun setupObservers() {
         viewModel.favoriteUsers.observe(viewLifecycleOwner, Observer {
             it.let {
-                Timber.d("Repo :: observer(${it.size})")
+                Timber.d("Trace :: observer(${it.size})")
                 favoriteAdapter.submitList(it)
+                if(it.isNotEmpty()){
+                    rvUsers.visibility = View.VISIBLE
+                } else {
+                    tvNotFound.text = getString(R.string.empty_favorite)
+                    backdropEmpty.visibility = View.VISIBLE
+                    rvUsers.visibility = View.GONE
+                }
             }
         })
     }

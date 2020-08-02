@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">GithubUser</string>
     <string name="username">username</string>
@@ -30,7 +31,6 @@
     <string name="title_home_fragment">Github User\'s</string>
     <string name="title_favorite_fragment">Favorite User\'s</string>
     <string name="title_detail_activity">Detail User</string>
-
     <string name="channel_id" translatable="false">Channel_Reminder</string>
     <string name="channel_name" translatable="false">Github User-%s</string>
     <string name="notification_title" translatable="false">Daily Reminder</string>
@@ -40,4 +40,5 @@
     <string name="add_widget" translatable="false">Add widget</string>
     <string name="favorite_users" translatable="false">Favorite Users</string>
     <string name="empty_data" translatable="false">No data</string>
+    <string name="empty_favorite">There are no favorite users</string>
 </resources>

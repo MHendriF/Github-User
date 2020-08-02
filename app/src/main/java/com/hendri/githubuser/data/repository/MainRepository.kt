@@ -20,21 +20,21 @@ class MainRepository(
 ) {
 
     suspend fun searchUsers(username: String?) : Response<UserResponse<User>> {
-        Timber.d("Repo :: searchUsers($username)")
+        Timber.d("Trace :: searchUsers($username)")
         return withContext(Dispatchers.IO){
             apiHelper.searchUsers(username)
         }
     }
 
     suspend fun getUser(username: String?) : User {
-        Timber.d("Repo :: getUser($username)")
+        Timber.d("Trace :: getUser($username)")
         return withContext(Dispatchers.IO){
             apiHelper.detailUser(username)
         }
     }
 
     suspend fun getFollowers(username: String?) : List<User>{
-        Timber.d("Repo :: getFollowers($username)")
+        Timber.d("Trace :: getFollowers($username)")
         return withContext(Dispatchers.IO){
             apiHelper.getFollowers(username)
         }
@@ -54,43 +54,18 @@ class MainRepository(
     }
 
     suspend fun insertUser(user: User) {
-        Timber.d("Repo :: insertUser($user)")
+        Timber.d("Trace :: insertUser($user)")
         withContext(Dispatchers.IO) {
             context.contentResolver.insert(USER_CONTENT_URI.toUri(), User.toContentValues(user))
         }
     }
 
     suspend fun deleteUserById(user: User) {
-        Timber.d("Repo :: deleteUserById($user)")
+        Timber.d("Trace :: deleteUserById($user)")
         withContext(Dispatchers.IO) {
             val uri = "$USER_CONTENT_URI/${user.id}".toUri()
             context.contentResolver.delete(uri, null, null)
         }
-    }
-
-    suspend fun getFavoriteUsers() : List<User>{
-        return withContext(Dispatchers.IO){
-            getUserCursorAsModel()
-        }
-    }
-
-    private fun getUserCursorAsModel(): List<User> {
-        val users: MutableList<User> = mutableListOf()
-        val cursor = context.contentResolver?.query(USER_CONTENT_URI.toUri(), null, null, null, null)
-        cursor?.let {
-            while (cursor.moveToNext()) {
-                User(
-                    id = cursor.getLong(cursor.getColumnIndexOrThrow(User.COLUMN_ID)),
-                    login = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_LOGIN)),
-                    avatar_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_AVATAR)),
-                    html_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_HTML_URL))
-                ).also {
-                    users.add(it)
-                }
-            }
-            cursor.close()
-        }
-        return users.toList()
     }
 
 }
