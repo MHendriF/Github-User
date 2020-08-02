@@ -3,8 +3,8 @@
     package="com.hendri.githubuser">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <permission android:name="com.hendri.githubuser.READ_DATABASE" android:protectionLevel="normal" />
-    <permission android:name="com.hendri.githubuser.WRITE_DATABASE" android:protectionLevel="normal" />
+    <permission android:name="com.hendri.githubuser.READ_DATABASE" />
+    <permission android:name="com.hendri.githubuser.WRITE_DATABASE" />
 
     <application
         android:allowBackup="true"

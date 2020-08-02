@@ -1,6 +1,7 @@
 package com.hendri.favoriteuser.ui.main.view.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel
-    private lateinit var favoriteAdapter: FavoriteAdapter
+    private lateinit var adapter: FavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,20 +52,21 @@ class FavoriteFragment : Fragment() {
     private fun setupObservers() {
         viewModel.getFavoriteUsers.observe(viewLifecycleOwner, Observer {
             it.let {
-                favoriteAdapter.addUsers(it)
+                adapter.addUsers(it)
             }
         })
     }
 
     private fun setupUI() {
         rvUsers.layoutManager = LinearLayoutManager(requireActivity())
+        adapter = FavoriteAdapter(arrayListOf())
         rvUsers.addItemDecoration(
             DividerItemDecoration(
                 rvUsers.context,
                 (rvUsers.layoutManager as LinearLayoutManager).orientation
             )
         )
-        rvUsers.adapter = favoriteAdapter
+        rvUsers.adapter = adapter
         rvUsers.visibility = View.VISIBLE
     }
 

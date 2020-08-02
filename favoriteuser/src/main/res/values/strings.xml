@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">ConsumerGitApp</string>
+    <string name="app_name" translatable="false">FavoriteUser</string>
     <string name="username">username</string>
     <string name="name">name</string>
     <string name="bio">bio</string>
