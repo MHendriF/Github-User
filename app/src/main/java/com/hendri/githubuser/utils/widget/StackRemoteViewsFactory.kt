@@ -21,22 +21,19 @@ class StackRemoteViewsFactory(private val context: Context) :
     RemoteViewsService.RemoteViewsFactory {
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var users: List<User>
-    private var TAG: String = "Trace"
 
     override fun onCreate() {
-        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(context))
+        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(context.applicationContext))
     }
 
     override fun onDataSetChanged() {
         users = getUsers()
-        //users = getFavoriteUsers()
     }
 
     override fun getViewAt(position: Int): RemoteViews {
         val remoteViews = RemoteViews(context.packageName, R.layout.item_widget)
 
         if (!users.isNullOrEmpty()) {
-            // Set item stack view
             remoteViews.apply {
                 users[position].apply {
                     setImageViewBitmap(
@@ -72,29 +69,7 @@ class StackRemoteViewsFactory(private val context: Context) :
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return bitmap
-    }
-
-    private fun getFavoriteUsers(): List<User> {
-        val users = ArrayList<User>()
-        val cursor = dbHelper.getAllUsersAsCursor()
-        //val cursor = context.contentResolver?.query(USER_CONTENT_URI.toUri(), null, null, null, null)
-        //val cursor = context.contentResolver?.query(Constants.CONTENT_URI, null, null, null, null)
-        cursor?.let {
-            while (cursor.moveToNext()) {
-                User(
-                    id = cursor.getLong(cursor.getColumnIndexOrThrow(User.COLUMN_ID)),
-                    login = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_LOGIN)),
-                    avatar_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_AVATAR)),
-                    html_url = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_HTML_URL))
-                ).also {
-                    users.add(it)
-                }
-            }
-            cursor.close()
-        }
-        return users
     }
 
     private fun getUsers(): List<User> = dbHelper.getUsers()
@@ -109,7 +84,5 @@ class StackRemoteViewsFactory(private val context: Context) :
 
     override fun getViewTypeCount(): Int = 1
 
-    override fun onDestroy() {
-        users = listOf()
-    }
+    override fun onDestroy() {}
 }

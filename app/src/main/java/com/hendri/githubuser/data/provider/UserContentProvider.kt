@@ -37,7 +37,6 @@ class UserContentProvider : ContentProvider() {
         }
     }
 
-
     override fun onCreate(): Boolean {
         mContext = context as Context
         dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(mContext.applicationContext))
@@ -64,8 +63,6 @@ class UserContentProvider : ContentProvider() {
             USER -> {
                 val id: Long = dbHelper.insertUser(User.toUserModel(values))
                 mContext.contentResolver.notifyChange(uri, null)
-                // Refresh data in refreshWidgetFavoriteUsers
-                refreshWidgetFavoriteUsers()
                 ContentUris.withAppendedId(uri, id)
             }
             USER_ID -> {
@@ -88,8 +85,6 @@ class UserContentProvider : ContentProvider() {
             USER_ID -> {
                 val id: Int = dbHelper.updateUser(User.toUserModel(values))
                 mContext.contentResolver.notifyChange(uri, null)
-                // Refresh data in refreshWidgetFavoriteUsers
-                refreshWidgetFavoriteUsers()
                 id
             }
             else -> {
@@ -106,8 +101,6 @@ class UserContentProvider : ContentProvider() {
             USER_ID -> {
                 val id: Int = dbHelper.deleteUserById(ContentUris.parseId(uri))
                 mContext.contentResolver.notifyChange(uri, null)
-                // Refresh data in refreshWidgetFavoriteUsers
-                refreshWidgetFavoriteUsers()
                 id
             }
             else -> {
@@ -116,13 +109,8 @@ class UserContentProvider : ContentProvider() {
         }
     }
 
-
     override fun getType(uri: Uri): String? {
         return null
-    }
-
-    private fun refreshWidgetFavoriteUsers() {
-        FavoriteUsersAppWidget.sendRefreshBroadcast(mContext.applicationContext)
     }
 
 }

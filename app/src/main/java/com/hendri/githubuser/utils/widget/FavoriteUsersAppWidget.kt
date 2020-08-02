@@ -50,21 +50,6 @@ class FavoriteUsersAppWidget : AppWidgetProvider() {
             //update app widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
-
-        fun sendRefreshBroadcast(context: Context) {
-            val component = context?.let { context ->
-                ComponentName(
-                    context,
-                    FavoriteUsersAppWidget::class.java
-                )
-            }
-            AppWidgetManager.getInstance(context).apply {
-                notifyAppWidgetViewDataChanged(
-                    getAppWidgetIds(component),
-                    R.id.ivStackWidget
-                )
-            }
-        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
