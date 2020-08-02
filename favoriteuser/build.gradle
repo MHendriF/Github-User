@@ -3,38 +3,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def getProperty(String filename, String propName) {
-    def propsFile = rootProject.file(filename)
-    if (propsFile.exists()) {
-        def props = new Properties()
-        props.load(new FileInputStream(propsFile))
-        if (props[propName] != null) {
-            return props[propName]
-        } else {
-            print("No such property " + propName + " in file " + filename)
-        }
-    } else {
-        print(filename + " does not exist!")
-    }
-}
-
-androidExtensions {
-    experimental = true
-}
-
 android {
     compileSdkVersion 30
-    buildToolsVersion "30"
+    buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.hendri.githubuser"
+        applicationId "com.hendri.favoriteuser"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "API_BASE_URL", "\"${getProperty("local.properties", "api_base_url")}\""
-        buildConfigField "String", "TOKEN_GITHUB", "\"${getProperty("local.properties", "token_github")}\""
     }
 
     buildTypes {
@@ -57,13 +37,13 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
 
     // UI
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -87,11 +67,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.archLifecycleVersion"
 
-    // Network
-    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
@@ -100,8 +75,4 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     kapt("com.github.bumptech.glide:compiler:$rootProject.glideVersion")
     implementation "com.facebook.shimmer:shimmer:$rootProject.shimmerVersion"
-
-    // Logging
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
-    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 }

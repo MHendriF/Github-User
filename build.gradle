@@ -35,4 +35,5 @@ ext {
     shimmerVersion = '0.5.0'
     glideVersion = '4.11.0'
     gsonVersion = '2.8.6'
+    timberVersion = '4.7.1'
 }
