@@ -20,7 +20,6 @@ import com.hendri.githubuser.utils.widget.FavoriteUsersAppWidget
 class UserContentProvider : ContentProvider() {
 
     private lateinit var mContext: Context
-    private var TAG = "Trace UserContentProvider"
 
     companion object {
         private const val USER = 1
@@ -41,7 +40,7 @@ class UserContentProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         mContext = context as Context
-        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(mContext.applicationContext))
+        dbHelper = DatabaseHelperImp(DatabaseBuilder.getInstance(mContext))
         return true
     }
 
@@ -51,7 +50,6 @@ class UserContentProvider : ContentProvider() {
     ): Cursor? {
         return when (MATCHER.match(uri)) {
             USER -> {
-                Log.d(TAG, "query: $uri")
                 dbHelper.getAllUsersAsCursor()
             }
             USER_ID -> dbHelper.getUserAsCursor((ContentUris.parseId(uri)))

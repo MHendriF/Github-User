@@ -19,4 +19,7 @@ interface DatabaseHelper {
     fun deleteUser(user: User): Int
 
     fun deleteUserById(id: Long?): Int
+
+    fun getAllUsers(): LiveData<List<User>>
+
 }

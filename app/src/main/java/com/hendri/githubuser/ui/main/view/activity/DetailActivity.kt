@@ -121,7 +121,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
                 DatabaseHelperImp(DatabaseBuilder.getInstance(this.application)),
-                this
+                this, this.application
             )
         ).get(DetailViewModel::class.java)
     }
@@ -148,7 +148,6 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
 
         ivBack.setOnClickListener { onBackPressed() }
         ivFavorite.setOnClickListener {
-            //viewModel.insert(user)
             viewModel.insertUser(user)
             Snackbar.make(
                 rootLayout,

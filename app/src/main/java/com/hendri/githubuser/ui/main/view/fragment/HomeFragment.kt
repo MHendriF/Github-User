@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_search.*
 
-
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
@@ -79,8 +78,9 @@ class HomeFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
-                requireContext()
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireContext().applicationContext)),
+                requireContext(),
+                requireActivity().application
             )
         ).get(MainViewModel::class.java)
     }

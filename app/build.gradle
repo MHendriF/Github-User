@@ -72,7 +72,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation 'com.google.android.material:material:1.1.0'
 
-    //navigation
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
@@ -92,7 +92,6 @@ dependencies {
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
@@ -102,4 +101,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     kapt("com.github.bumptech.glide:compiler:$rootProject.glideVersion")
     implementation "com.facebook.shimmer:shimmer:$rootProject.shimmerVersion"
+
+    // Logging
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

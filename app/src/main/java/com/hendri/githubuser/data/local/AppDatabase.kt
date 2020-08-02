@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.hendri.githubuser.data.local.dao.UserDao
 import com.hendri.githubuser.data.model.User
 
-@Database(entities = [User::class], version = 2, exportSchema = true)
+@Database(entities = [User::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }

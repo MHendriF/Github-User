@@ -19,4 +19,6 @@ class DatabaseHelperImp(private val appDatabase: AppDatabase) : DatabaseHelper {
     override fun deleteUser(user: User): Int = appDatabase.userDao().deleteUser(user)
 
     override fun deleteUserById(id: Long?): Int = appDatabase.userDao().deleteUserById(id)
+
+    override fun getAllUsers(): LiveData<List<User>> = appDatabase.userDao().getAllUsers()
 }

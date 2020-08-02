@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.hendri.githubuser.R
 import com.hendri.githubuser.data.api.ApiHelperImp
 import com.hendri.githubuser.data.api.RetrofitBuilder
@@ -23,22 +22,17 @@ import com.hendri.githubuser.data.local.DatabaseBuilder
 import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
-import com.hendri.githubuser.ui.main.adapter.FavoriteAdapter
-import com.hendri.githubuser.ui.main.adapter.MainAdapter
+import com.hendri.githubuser.ui.main.adapter.UserFavoriteAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
 import com.hendri.githubuser.utils.Status
-import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.rvUsers
-import kotlinx.android.synthetic.main.fragment_main.shimmerContainer
+import timber.log.Timber
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel
-    private lateinit var adapter: FavoriteAdapter
+    private lateinit var userFavoriteAdapter: UserFavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +44,10 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupActionBar()
-        setupViewModel()
+
         setupUI()
+        setupViewModel()
+
         setupObservers()
         setupItemTouch()
     }
@@ -60,15 +56,26 @@ class FavoriteFragment : Fragment() {
         viewModel = ViewModelProvider(
             this, ViewModelFactory(
                 ApiHelperImp(RetrofitBuilder.apiService),
-                DatabaseHelperImp(DatabaseBuilder.getInstance(requireActivity().application)),
-                requireContext()
+                DatabaseHelperImp(DatabaseBuilder.getInstance(requireContext().applicationContext)),
+                requireContext(),
+                requireActivity().application
             )
         ).get(FavoriteViewModel::class.java)
     }
 
+
+    private fun setupObservers() {
+        viewModel.favoriteUsers.observe(viewLifecycleOwner, Observer {
+            it.let {
+                Timber.d("Repo :: observer(${it.size})")
+                userFavoriteAdapter.submitList(it)
+            }
+        })
+    }
+
     private fun setupUI() {
         rvUsers.layoutManager = LinearLayoutManager(requireActivity())
-        adapter = FavoriteAdapter(arrayListOf()) { user ->
+        userFavoriteAdapter = UserFavoriteAdapter { user ->
             user.let {
                 val intent = Intent(requireActivity(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_USER, user)
@@ -81,33 +88,13 @@ class FavoriteFragment : Fragment() {
                 (rvUsers.layoutManager as LinearLayoutManager).orientation
             )
         )
-        rvUsers.adapter = adapter
+        rvUsers.adapter = userFavoriteAdapter
+
+        rvUsers.visibility = View.VISIBLE
+        shimmerContainer.stopShimmer()
+        shimmerContainer.visibility = View.GONE
     }
 
-    private fun setupObservers() {
-        viewModel.fetchUsers().observe(requireActivity(), Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        rvUsers.visibility = View.VISIBLE
-                        shimmerContainer.stopShimmer()
-                        shimmerContainer.visibility = View.GONE
-                        resource.data?.let { users -> setupData(users) }
-                    }
-                    Status.ERROR -> {
-                        rvUsers.visibility = View.VISIBLE
-                        shimmerContainer.stopShimmer()
-                        shimmerContainer.visibility = View.GONE
-                        it.message?.let { it1 -> requireContext().toast(it1) }
-                    }
-                    Status.LOADING -> {
-                        shimmerContainer.startShimmer()
-                        rvUsers.visibility = View.GONE
-                    }
-                }
-            }
-        })
-    }
 
     private fun setupItemTouch() {
         // Add the functionality to swipe items in the
@@ -130,7 +117,7 @@ class FavoriteFragment : Fragment() {
                     direction: Int
                 ) {
                     val position = viewHolder.adapterPosition
-                    val user: User? = adapter.getUserAtPosition(position)
+                    val user: User? = userFavoriteAdapter.getUserAtPosition(position)
 
                     // Delete the user
                     requireContext().toast("Delete user ${user?.login} from favorite")
@@ -144,13 +131,6 @@ class FavoriteFragment : Fragment() {
 
     private fun setupActionBar() {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_favorite_fragment)
-    }
-
-    private fun setupData(users: List<User>) {
-        adapter.apply {
-            addUsers(users)
-            notifyDataSetChanged()
-        }
     }
 
     private fun Context.toast(message: String) {
