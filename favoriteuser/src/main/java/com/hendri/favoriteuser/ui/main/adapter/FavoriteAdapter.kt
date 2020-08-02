@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.hendri.favoriteuser.R
 import com.hendri.favoriteuser.data.model.User
 import kotlinx.android.synthetic.main.item_user.view.*
@@ -18,14 +21,14 @@ class FavoriteAdapter (
             itemView.apply {
                 tvUsername.text = user.login
                 tvUrl.text = user.html_url
-//                Glide.with(ivAvatar.context)
-//                    .load(user.avatar_url)
-//                    .apply(
-//                        RequestOptions
-//                            .circleCropTransform()
-//                            .override(100, 100)
-//                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-//                    .into(ivAvatar)
+                Glide.with(ivAvatar.context)
+                    .load(user.avatar_url)
+                    .apply(
+                        RequestOptions
+                            .circleCropTransform()
+                            .override(100, 100)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(ivAvatar)
             }
         }
     }

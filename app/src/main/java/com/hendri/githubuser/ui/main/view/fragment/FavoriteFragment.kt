@@ -22,7 +22,7 @@ import com.hendri.githubuser.data.local.DatabaseBuilder
 import com.hendri.githubuser.data.local.DatabaseHelperImp
 import com.hendri.githubuser.data.model.User
 import com.hendri.githubuser.ui.base.ViewModelFactory
-import com.hendri.githubuser.ui.main.adapter.UserFavoriteAdapter
+import com.hendri.githubuser.ui.main.adapter.FavoriteAdapter
 import com.hendri.githubuser.ui.main.view.activity.DetailActivity
 import com.hendri.githubuser.ui.main.viewmodel.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -31,7 +31,7 @@ import timber.log.Timber
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel
-    private lateinit var userFavoriteAdapter: UserFavoriteAdapter
+    private lateinit var favoriteAdapter: FavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +43,8 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupActionBar()
-
         setupUI()
         setupViewModel()
-
         setupObservers()
         setupItemTouch()
     }
@@ -67,14 +65,14 @@ class FavoriteFragment : Fragment() {
         viewModel.favoriteUsers.observe(viewLifecycleOwner, Observer {
             it.let {
                 Timber.d("Repo :: observer(${it.size})")
-                userFavoriteAdapter.submitList(it)
+                favoriteAdapter.submitList(it)
             }
         })
     }
 
     private fun setupUI() {
         rvUsers.layoutManager = LinearLayoutManager(requireActivity())
-        userFavoriteAdapter = UserFavoriteAdapter { user ->
+        favoriteAdapter = FavoriteAdapter { user ->
             user.let {
                 val intent = Intent(requireActivity(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_USER, user)
@@ -87,7 +85,7 @@ class FavoriteFragment : Fragment() {
                 (rvUsers.layoutManager as LinearLayoutManager).orientation
             )
         )
-        rvUsers.adapter = userFavoriteAdapter
+        rvUsers.adapter = favoriteAdapter
 
         rvUsers.visibility = View.VISIBLE
         shimmerContainer.stopShimmer()
@@ -116,7 +114,7 @@ class FavoriteFragment : Fragment() {
                     direction: Int
                 ) {
                     val position = viewHolder.adapterPosition
-                    val user: User? = userFavoriteAdapter.getUserAtPosition(position)
+                    val user: User? = favoriteAdapter.getUserAtPosition(position)
 
                     // Delete the user
                     requireContext().toast("Delete user ${user?.login} from favorite")
