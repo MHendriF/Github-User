@@ -6,16 +6,11 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.net.toUri
 import com.hendri.githubuser.R
 import com.hendri.githubuser.ui.main.view.activity.MainActivity
 
-
-/**
- * Implementation of App Widget functionality.
- */
 class FavoriteUsersAppWidget : AppWidgetProvider() {
 
     companion object {
@@ -44,7 +39,7 @@ class FavoriteUsersAppWidget : AppWidgetProvider() {
             ).apply {
                 setRemoteAdapter(R.id.stackView, intent)
                 setEmptyView(R.id.stackView, R.id.emptyView)
-                setOnClickPendingIntent( R.id.tvTitleWidget, tittlePendingIntent)
+                setOnClickPendingIntent(R.id.tvTitleWidget, tittlePendingIntent)
             }
 
             //update app widget

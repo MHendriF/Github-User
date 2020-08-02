@@ -30,8 +30,7 @@ object NotificationHelper {
         val channelId = context.getString(R.string.channel_id)
         val channelName = context.getString(R.string.channel_name)
 
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationIntent = Intent(context, MainActivity::class.java).apply {

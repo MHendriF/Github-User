@@ -5,9 +5,10 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.hendri.githubuser.utils.USER_TABLE_NAME
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = User.TABLE_NAME)
+@Entity(tableName = USER_TABLE_NAME)
 @Parcelize
 data class User(
     @PrimaryKey(autoGenerate = false)
@@ -35,7 +36,6 @@ data class User(
 ) : Parcelable {
 
     companion object {
-        const val TABLE_NAME = "users"
         const val COLUMN_ID = "id"
         const val COLUMN_LOGIN = "login"
         const val COLUMN_AVATAR = "avatar_url"

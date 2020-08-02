@@ -19,37 +19,35 @@ class MainRepository(
     private val context: Context
 ) {
 
-    suspend fun searchUsers(username: String?) : Response<UserResponse<User>> {
+    suspend fun searchUsers(username: String?): Response<UserResponse<User>> {
         Timber.d("Trace :: searchUsers($username)")
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             apiHelper.searchUsers(username)
         }
     }
 
-    suspend fun getUser(username: String?) : User {
+    suspend fun getUser(username: String?): User {
         Timber.d("Trace :: getUser($username)")
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             apiHelper.detailUser(username)
         }
     }
 
-    suspend fun getFollowers(username: String?) : List<User>{
+    suspend fun getFollowers(username: String?): List<User> {
         Timber.d("Trace :: getFollowers($username)")
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             apiHelper.getFollowers(username)
         }
     }
 
-    suspend fun getFollowing(username: String?) : List<User>{
+    suspend fun getFollowing(username: String?): List<User> {
         Timber.d("Repo :: getFollowing($username)")
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             apiHelper.getFollowing(username)
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fun getAllUsers() : LiveData<List<User>>{
+    fun getAllUsers(): LiveData<List<User>> {
         return dbHelper.getAllUsers()
     }
 
