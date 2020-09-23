@@ -11,7 +11,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/image_backdrop"
-        android:src="@drawable/github_logo" />
+        android:src="@drawable/github_backdrop" />
 
     <TextView
         android:layout_width="wrap_content"

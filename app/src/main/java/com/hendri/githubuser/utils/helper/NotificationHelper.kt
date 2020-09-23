@@ -10,7 +10,6 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.hendri.githubuser.R
 import com.hendri.githubuser.ui.main.view.activity.MainActivity

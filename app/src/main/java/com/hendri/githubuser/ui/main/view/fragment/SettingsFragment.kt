@@ -1,7 +1,10 @@
 package com.hendri.githubuser.ui.main.view.fragment
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -22,7 +25,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         const val TIME_PICKER_REMINDER = "TimePickerReminder"
     }
 
-    private var reminderPref : SwitchPreference? = null
+    private var reminderPref: SwitchPreference? = null
     private var timePref: Preference? = null
     private var localePref: Preference? = null
 
@@ -38,15 +41,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupReminder()
         setupTimeReminder()
         setupLocale()
+        setupChannel(
+            getString(R.string.github_notification_channel_id),
+            getString(R.string.github_notification_channel_name)
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupReminder() {
         reminderPref?.setOnPreferenceChangeListener { _, newValue ->
-            if(newValue as Boolean){
+            if (newValue as Boolean) {
                 requireContext().toast("reminder on")
                 AlarmScheduler.scheduleAlarm(requireContext())
-            }else{
+            } else {
                 requireContext().toast("reminder off")
                 AlarmScheduler.cancelAlarm(requireContext())
             }
@@ -69,7 +76,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun setupLocale(){
+    private fun setupLocale() {
         localePref?.setOnPreferenceClickListener {
             Intent(Settings.ACTION_LOCALE_SETTINGS).also { intent ->
                 startActivity(intent)
@@ -99,10 +106,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupTimer(pref: Preference?){
+    private fun setupTimer(pref: Preference?) {
         pref?.let {
             val time = pref.sharedPreferences.getString(pref.key, null)
-            if(time == null){
+            if (time == null) {
                 pref.sharedPreferences.edit {
                     putString(
                         pref.key,
@@ -110,6 +117,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     )
                 }
             }
+        }
+    }
+
+    private fun setupChannel(channelId: String, channelName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH).
+                    apply {
+                        setShowBadge(false)
+                    }
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = getString(R.string.reminder_notification_channel_description)
+
+            val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 

@@ -20,6 +20,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".ui.main.view.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.main.view.activity.DetailActivity" />
+
+        <receiver
+            android:name=".utils.reminder.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".utils.reminder.SnoozeReceiver"
+            android:enabled="true"
+            android:exported="false" />
         <receiver android:name=".utils.widget.FavoriteUsersAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -49,14 +66,6 @@
             android:name=".utils.reminder.ReminderReceiver"
             android:enabled="true" />
 
-        <activity android:name=".ui.main.view.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.main.view.activity.DetailActivity" />
     </application>
 
 </manifest>
